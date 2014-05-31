@@ -1,0 +1,22 @@
+public class Solution {
+    public List<ArrayList<Integer>> generate(int numRows) {
+        List<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
+        for(int i=0; i<numRows; i++){
+            ArrayList<Integer> temp = new ArrayList<Integer>();
+            temp.add(1);
+            if(i>0){
+                for(int j=0; j<res.get(i-1).size()-1; j++){
+                    temp.add(res.get(i-1).get(j)+res.get(i-1).get(j+1));
+                }
+                temp.add(1);
+            }
+            res.add(temp);
+        }
+        return res;
+    }
+}
+
+// List is an interface, not a concrete class.
+//An interface is just a set of functions that a class can implement; 
+//it doesn't make any sense to instantiate an interface.
+//ArrayList is a concrete class that happens to implement this interface and all of the methods in it.
