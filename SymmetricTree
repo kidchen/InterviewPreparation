@@ -1,0 +1,61 @@
+// recursive
+
+/**
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        if(root==null) return true;
+        return isSymmetric(root.left,root.right);
+    }
+    
+    boolean isSymmetric(TreeNode left, TreeNode right){
+        if(left==null) return right==null;
+        if(right==null) return false;
+        if(left.val!=right.val) return false;
+        if(!isSymmetric(left.left,right.right)) return false;
+        if(!isSymmetric(left.right,right.left)) return false;
+        return true;
+    }
+}
+
+
+// iterative
+
+/**
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        if(root==null) return true;
+        LinkedList<TreeNode> left = new LinkedList<TreeNode>();
+        LinkedList<TreeNode> right = new LinkedList<TreeNode>();
+        left.add(root.left);
+        right.add(root.right);
+        while(!left.isEmpty()&&!right.isEmpty()){
+            TreeNode tempLeft = left.poll();
+            TreeNode tempRight = right.poll();
+            if(tempLeft == null && tempRight != null || tempLeft != null && tempRight == null) return false;
+            if(tempLeft != null){
+                if(tempLeft.val != tempRight.val) return false;
+                left.add(tempLeft.left);
+                left.add(tempLeft.right);
+                right.add(tempRight.right);
+                right.add(tempRight.left);
+            }
+        }
+        return true;
+    }
+}
