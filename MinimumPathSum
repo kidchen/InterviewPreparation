@@ -1,0 +1,16 @@
+public class Solution {
+    public int minPathSum(int[][] grid) {
+        int[] eachRow = new int[grid[0].length];
+        for(int i=0;i<grid.length;i++){
+            for(int j=0;j<grid[0].length;j++){
+                // this eachRow is constantly changed and it represent
+                // this row's new pathSum ~ j ~ last row's pathSum
+                if(j>0){
+                    eachRow[j]=(i>0?Math.min(eachRow[j-1],eachRow[j]):eachRow[j-1]);
+                }
+                eachRow[j]+=grid[i][j];
+            }
+        }
+        return eachRow[grid[0].length-1];
+    }
+}
