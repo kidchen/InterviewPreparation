@@ -1,0 +1,54 @@
+public class Solution {
+    public void setZeroes(int[][] matrix) {
+    
+        // thought: mark zeros on the first col and row
+        
+        boolean firstRow=false, firstCol=false;
+        for(int i = 0; i<matrix.length;i++){
+            if(matrix[i][0]==0){
+                firstCol=true;
+                break;
+            }
+        }
+        for(int i = 0; i<matrix[0].length;i++){
+            if(matrix[0][i]==0){
+                firstRow=true;
+                break;
+            }
+        }
+        
+        for(int i=1; i<matrix.length;i++){
+            for(int j=1; j<matrix[0].length;j++){
+                if(matrix[i][j]==0){
+                    matrix[i][0]=0;
+                    matrix[0][j]=0;
+                }
+            }
+        }
+        
+        for(int i=1; i<matrix.length;i++){
+            for(int j=1; j<matrix[0].length;j++){
+                if(matrix[i][0]==0 || matrix[0][j]==0){
+                    matrix[i][j]=0;
+                }
+            }
+        }
+        
+        if(firstRow){
+            for(int i=0; i<matrix[0].length;i++){
+                matrix[0][i]=0;
+            }
+        }
+        if(firstCol){
+            for(int i=0; i<matrix.length;i++){
+                matrix[i][0]=0;
+            }
+        }
+    }
+}
+
+
+// in CTCI, there is another solution which costs more spaces. 
+// use two boolean[] to store all 0 positions (row & col) at first for-for loop
+// then in the second for-for loop, if boolean row or boolean col is true,
+// change the whole row or col into 0.
