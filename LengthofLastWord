@@ -1,0 +1,28 @@
+public class Solution {
+    public int lengthOfLastWord(String s) {
+        int last = s.length()-1;
+        int count = 0;
+        while(last>=0 && s.charAt(last)==' '){
+            last--;
+        }
+        while(last>=0 && s.charAt(last)!=' '){
+            last--;
+            count++;
+        }
+        return count;
+    }
+}
+
+
+// use .trim() to omit the leading and trailing whitespace
+
+public class Solution {
+    public int lengthOfLastWord(String s) {
+        int count = 0;
+        s = s.trim();
+        int last = s.length()-1;
+        while(last>=0 && s.charAt(last--)!=' ')
+            count++;
+        return count;
+    }
+}
