@@ -1,0 +1,37 @@
+/**
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; left = null; right = null; }
+ * }
+ */
+public class Solution {
+    public ArrayList<TreeNode> generateTrees(int n) {
+        return helper(1,n);
+    }
+    
+    ArrayList<TreeNode> helper(int start, int end){
+        ArrayList<TreeNode> result = new ArrayList<TreeNode>();
+        if(start>end){  // set null for empty left or right
+            result.add(null);
+            return result;
+        }
+        
+        for(int i=start; i<=end; i++){
+            // dfs, set i as root, find left nodes and right nodes
+            ArrayList<TreeNode> left = helper(start,i-1);   // find all possibilities in left part
+            ArrayList<TreeNode> right = helper(i+1,end);  // find all possibilities in right part
+            for(int j=0; j<left.size(); j++){   // from 0, scan all possible left and right
+                for(int k=0; k<right.size(); k++){
+                    TreeNode root = new TreeNode(i);
+                    root.left = left.get(j);
+                    root.right = right.get(k);
+                    result.add(root);
+                }
+            }
+        }
+        return result;
+    }
+}
