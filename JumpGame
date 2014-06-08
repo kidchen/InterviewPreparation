@@ -1,0 +1,16 @@
+public class Solution {
+    public boolean canJump(int[] A) {
+    // maxpath: record furthest distance from current position 
+        int[] maxpath = new int[A.length];
+        // consider [0]
+        if(A.length>1 &&  A[0]==0) return false;
+        maxpath[0]=A[0];
+        for(int i=1; i<A.length; i++){
+            maxpath[i]=Math.max(maxpath[i-1], A[i]+i);
+            if(maxpath[i]<=i && i!= A.length-1){
+                return false;
+            }
+        }
+        return true;
+    }
+}
