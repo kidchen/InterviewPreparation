@@ -1,3 +1,8 @@
+/*
+* Given a singly linked list where elements are sorted in ascending order, convert it to a height balanced BST.
+*/
+
+
 /**
  * Definition for singly-linked list.
  * public class ListNode {
@@ -6,6 +11,7 @@
  *     ListNode(int x) { val = x; next = null; }
  * }
  */
+ 
 /**
  * Definition for binary tree
  * public class TreeNode {
@@ -15,27 +21,26 @@
  *     TreeNode(int x) { val = x; }
  * }
  */
+ 
 public class Solution {
-    static ListNode head;
     public TreeNode sortedListToBST(ListNode head) {
         if(head == null)    return null;
-        
-        // !!! same name(head)
-        this.head = head;
          
         // get list length
         int len = 0;
-        ListNode ln = head;
-        while(ln != null){
+        ListNode cur = head;
+        while(cur != null){
             len++;
-            ln = ln.next;
-        }   
-         
-        return sortedListToBST(0, len - 1);
+            cur = cur.next;
+        }
+        // passing the head in recursion
+        ArrayList<ListNode> list = new ArrayList<ListNode>();
+        list.add(head);
+        return helper(list, 0, len - 1);
     }
      
     // build bottom-to-top
-    public TreeNode sortedListToBST(int start, int end) {
+    public TreeNode helper(ArrayList<ListNode> list, int start, int end) {
         // if finished (root)
         if(start > end) return null;
          
@@ -43,13 +48,13 @@ public class Solution {
         int mid = (start + end) / 2;
          
         // build left sub tree
-        TreeNode left = sortedListToBST(start, mid - 1);
+        TreeNode left = helper(list, start, mid - 1);
         // build root node
-        TreeNode root = new TreeNode(head.val);
+        TreeNode root = new TreeNode(list.get(0).val);
         root.left = left;
         // move to next node to build right sub tree
-        head = head.next;
-        root.right = sortedListToBST(mid + 1, end);
+        list.set(0, list.get(0).next);
+        root.right = helper(list, mid + 1, end);
          
         return root;
     }
