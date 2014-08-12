@@ -32,8 +32,7 @@ public ArrayList<Integer> preorderTraversal(TreeNode root) {
     return result;
 }
 
-private void helper(TreeNode root, ArrayList<Integer> result)
-{
+private void helper(TreeNode root, ArrayList<Integer> result) {
     if(root == null)
         return;
     result.add(root.val);
