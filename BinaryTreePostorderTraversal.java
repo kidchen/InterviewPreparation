@@ -9,32 +9,32 @@
  */
 public class Solution {
     public ArrayList<Integer> postorderTraversal(TreeNode root) {
-        ArrayList<Integer> traversal = new ArrayList<Integer>();
+        ArrayList<Integer> result = new ArrayList<Integer>();
         if(root==null){
-            return traversal;
+            return result;
         }
         Stack<TreeNode> helper = new Stack<TreeNode>();
         helper.add(root);
         while(!helper.empty()){
-            TreeNode top = helper.peek();
+            TreeNode cur = helper.peek();
             // leaf node
-            if(top.left==null && top.right==null){
-                traversal.add(top.val);
+            if(cur.left==null && cur.right==null){
+                result.add(cur.val);
                 helper.pop();
             }
             // node with left child
-            if(top.left!=null){
-                helper.add(top.left);
-                top.left = null;
+            if(cur.left!=null){
+                helper.add(cur.left);
+                cur.left = null;
                 continue;
             }
             // node with right child
-            if(top.right!=null){
-                helper.add(top.right);
-                top.right = null;
+            if(cur.right!=null){
+                helper.add(cur.right);
+                cur.right = null;
                 continue;
             }
         }
-        return traversal;
+        return result;
     }
 }
