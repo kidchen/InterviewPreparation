@@ -12,20 +12,19 @@ Given encoded message "12", it could be decoded as "AB" (1 2) or "L" (12).
 
 The number of ways decoding "12" is 2.
 */
-
 /*
 1. 00: res[i]=0
 2. 10,20: res[i]=res[i-2] --> first if statement
 3. 01-09 && 30-99, 27-29: res[i]=res[i-1] --> second if statement
 4. 11-19, 21-26: res[i]=res[i-1]+res[i-2] --> general situation
 */
-
 public class Solution {
     public int numDecodings(String s) {
         // for each element newly input, there are two possibilities:
         // 1. it can be identified as a letter, that means there are dp[i-1] ways
         // 2. it also can be a letter combining with its former char, so dp[i-2] ways
-        if(s.charAt(0) == '0' || s.length() == 0 || s == null)
+        // !!! this line: ORDER MATTERS !!!
+        if(s == null || s.length() == 0 || s.charAt(0) == '0')
             return 0;
         // we need three parameters to pass dp[i], dp[i-1], dp[i-2] as num, num1, num2
         int num = 1;
