@@ -31,11 +31,11 @@ public class Solution {
         }
         // DFS:
         // In left part: preStart = preStart + 1
-        //      !!!      preEnd = divide + prestart - inStart, we need to -inStart because ?
+        //      !!!      preEnd = (divide - inStart) + prestart, (divide - inStart) length of the left subtree (in inorder)
         //               inStart = inStart
         //               inEnd = divide - 1
         root.left = buildTree(preorder, inorder, preStart + 1, divide + preStart - inStart, inStart, divide - 1);
-        //      !!!       preStart = preStart + divide + 1 - inStart, nee to -inStart because ?
+        //      !!!       preStart = preStart +(divide - inStart) + 1 (+1 is for excluding the divide node)
         // In right part: preEnd = preEnd
         //                inStart = divide + 1
         //                inEnd = inEnd
