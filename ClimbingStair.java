@@ -19,7 +19,7 @@ public class Solution {
             // current step will be the onestep in the upper stair
             oneStep = temp;
         }
-        // or return oneStep
+        // or return oneStep (oneStep = temp) and we don't need to initialize temp
         return temp;
     }
 }
