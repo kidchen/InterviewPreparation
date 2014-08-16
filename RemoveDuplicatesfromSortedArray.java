@@ -14,6 +14,7 @@ public class Solution {
         if(A == null || A.length < 2){
             return A.length;
         }
+        // index is the new length
         int index = 1;
         for(int i = 1; i < A.length; i++) {
             if(A[i] != A[i - 1]) {
