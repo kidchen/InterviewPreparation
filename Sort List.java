@@ -1,3 +1,7 @@
+/*
+Sort a linked list in O(n log n) time using constant space complexity.
+*/
+
 /**
  * Definition for singly-linked list.
  * class ListNode {
@@ -11,45 +15,48 @@
  */
 public class Solution {
     public ListNode sortList(ListNode head) {
-        return merge(head);
+        return seperate(head);
     }
     
-    // sperate head into two lists
-    ListNode merge(ListNode head) {
-        if(head == null || head.next == null) return head;
-        ListNode slow = head, fast = head;
+    // seperate the list into two
+    ListNode seperate(ListNode head) {
+        if(head == null || head.next == null) {
+            return head;
+        }
+        ListNode slow = head;
+        ListNode fast = head;
         while(fast.next != null && fast.next.next != null) {
             slow = slow.next;
             fast = fast.next.next;
         }
-        ListNode head2 = slow.next;
         ListNode head1 = head;
+        ListNode head2 = slow.next;
         slow.next = null;
-        head1 = merge(head1);
-        head2 = merge(head2);
-        return sort(head1, head2);
+        head1 = seperate(head1);
+        head2 = seperate(head2);
+        return merge(head1, head2);
     }
     
-    // merge two sorted list
-    ListNode sort(ListNode head1, ListNode head2) {
-        ListNode dummy = new ListNode(0);
-        dummy.next = head1;
-        ListNode pre = dummy;
+    // merge two sorted lists
+    ListNode merge(ListNode head1, ListNode head2) {
+        ListNode result = new ListNode(0);
+        ListNode temp = result;
         while(head1 != null && head2 != null) {
             if(head1.val < head2.val) {
+                temp.next = head1;
                 head1 = head1.next;
             } else {
-                // !!! classic swap !!!
-                ListNode next = head2.next;
-                head2.next = pre.next;
-                pre.next = head2;
-                head2 = next;
+                temp.next = head2;
+                head2 = head2.next;
             }
-            pre = pre.next;
+            temp = temp.next;
+        }
+        if(head1 != null) {
+            temp.next = head1;
         }
         if(head2 != null) {
-            pre.next = head2;
+            temp.next = head2;
         }
-        return dummy.next;
+        return result.next;
     }
 }
