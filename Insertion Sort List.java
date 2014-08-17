@@ -38,3 +38,47 @@ public class Solution {
         return dummy.next;
     }
 }
+
+
+
+/************UPDATE AUG 17*************/
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode insertionSortList(ListNode head) {
+        if(head == null) {
+            return head;
+        }
+        ListNode result = new ListNode(0);
+        result.next = head;
+        ListNode cur = head;
+        while(cur != null && cur.next != null) {
+            if(cur.val > cur.next.val) {
+                // find a position to swap with cur.next (smaller)
+                ListNode smaller = cur.next;
+                ListNode pre = result;
+                while(pre.next.val < smaller.val) {
+                    pre = pre.next;
+                }
+                ListNode temp = pre.next;
+                pre.next = smaller;
+                cur.next = smaller.next;
+                smaller.next = temp;
+            } else {
+                cur = cur.next;
+            }
+        }
+        
+        return result.next;
+    }
+}
