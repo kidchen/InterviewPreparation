@@ -9,10 +9,14 @@
  *     }
  * }
  */
+ 
+// recursion
 public class Solution {
     public ListNode swapPairs(ListNode head) {
-        if(head == null) return null;
-        if(head.next == null) return head;
+        if(head == null) 
+            return null;
+        if(head.next == null) 
+            return head;
         ListNode first = head;
         ListNode second = first.next;
         ListNode third = second.next;
@@ -21,3 +25,6 @@ public class Solution {
         return second;
     }
 }
+
+// general
+
