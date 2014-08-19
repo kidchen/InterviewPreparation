@@ -43,20 +43,20 @@ public class Solution {
 // general reverse all:
 // by iterative: Time O(n), Space:O(1)
 public reverseListIteratively (Node root) {
-	if (root == NULL || root.next == NULL)
+	if (root == null || root.next == null)
 		return;  //empty or just one node in list
 	Node Second = root.next;
 	//store third node before we change 
 	Node Third = Second.next;  
 	//Second's next pointer
 	Second.next = root;  //second now points to root
-	root.next = NULL;  //change root pointer to NULL
+	root.next = null;  //change root pointer to NULL
 	//only two nodes, which we already reversed
-	if (Third == NULL)
+	if (Third == null)
 		return;  
 	Node CurrentNode = Third;
 	Node PreviousNode = Second;
-	while (CurrentNode != NULL) { 
+	while (CurrentNode != null) { 
 		Node NextNode = CurrentNode.next;
 		CurrentNode.next = PreviousNode;
 	/*  repeat the process, but have to reset
@@ -70,19 +70,16 @@ public reverseListIteratively (Node root) {
 
 
 // by recursive: Time O(n), Space O(n) stack overhead
-public void recursiveReverse(Node currentNode) {  
+public void recursiveReverse(Node head) {  
 	//check for empty list 
-	if(currentNode == NULL)
-    	return;
-	/* if we are at the TAIL node:
-    	recursive base case:
- 	*/
-	if(currentNode.next == NULL) { 
+	if(head == null)
+    		return;
+	if(head.next == null) { 
 	//set HEAD to current TAIL since we are reversing list
-		head = currentNode; 
+		newHead = head; 
 		return; //since this is the base case
 	}
-	recursiveReverse(currentNode.next);
-	currentNode.next.next = currentNode;
-	currentNode.next = null; //set "old" next pointer to NULL
+	recursiveReverse(head.next);
+	head.next.next = head;
+	head.next = null; //set "old" next pointer to NULL
 }
