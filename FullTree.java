@@ -1,5 +1,31 @@
-// Recursion
-// Level Order Traversal and check when one level is done
+// Recursion - DFS - stack
+// Level Order Traversal - traversal all nodes
+public boolean fullTree(TreeNode root) {
+	if(root == null) {
+		return true;
+	}
+	ArrayList<ArrayList<TreeNode>> allLevel = new ArrayList<ArrayList<TreeNode>>();
+	helper(root, allLevel, 1);
+	int level = allLevel.size() - 1;
+	int lastLevel = allLevel.get(level).size();
+	if(lastLevel = Math.pow(2, level)) {
+		return true;
+	}
+	return false;
+}
+
+private void helper(TreeNode root, ArrayList<ArrayList<TreeNode>> allLevel, int level) {
+	if(root == null) {
+		return;
+	}
+
+	if(level > allLevel.size()) {
+		allLevel.add(new ArrayList<TreeNode>());
+	}
+	allLevel.get(level - 1).add(root);
+	helper(root.left, allLevel, level + 1);
+	helper(root.right, allLevel, level + 1);
+}
 
 
 // try to use iteration rather than recursion (sometimes stack overflow when recursion going to deep)
@@ -39,6 +65,7 @@ public boolean fullTree(TreeNode root) {
 	return false;
 }
 
+// Iteration - BFS - Queue
 
 // Method 2: by level order traversal and check each level whether it is satisfied with "nodes = 2 ^ level" (level from 0)
 // Use a queue to store the current level nodes and two counters to calculate current level nodes total and next level nodes total
