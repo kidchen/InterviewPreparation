@@ -22,3 +22,31 @@ public class Solution {
         return res;
     }
 }
+
+
+// if String:
+// Recursion
+
+public void permutation (String input) {
+	int length = input.length();
+	char[] in = input.toCharArray();
+	boolean[] used = new boolean[length];
+	StringBuffer word = new StringBuffer();
+	permute(in, length, used, word);
+}
+
+public void permute(char[] in, int length, boolean[] used, StringBuffer word) {
+	if(word.length() == length) {
+		System.out.println(word.toString());
+		return;
+	}
+	for(int i = 0; i < length; i++) {
+		if(!used[i]) {
+			word.append(in[i]);
+			used[i] = true;
+			permute(in, length, used, word);
+			used[i] = false;
+			word.deleteCharAt(word.length() - 1);
+		}
+	}
+}
