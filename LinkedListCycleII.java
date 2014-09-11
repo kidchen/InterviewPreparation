@@ -19,6 +19,7 @@ public class Solution {
             if(fast==slow) break;
         }
         if(fast!=slow) return null;
+        // set fast to the start, and then move at the same speed.
         fast = head;
         while(fast!=slow){
             fast=fast.next;
@@ -27,6 +28,7 @@ public class Solution {
         return fast;
     }
 }
+
 
 // important: a=c
 // http://www.cnblogs.com/hiddenfox/p/3408931.html
