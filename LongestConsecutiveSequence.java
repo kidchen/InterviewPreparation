@@ -40,3 +40,24 @@ public class Solution {
         return longest;
     }
 }
+
+
+// easy one:
+// only return consecutive sequence length, eg: [1,2,3,5,4], return 3.
+
+	public static int longestConsecutive(int[] num) {
+	    if(num == null || num.length == 0) {
+	        return 0;
+	    }
+	    int longest = 1;
+	    int local = 1;
+	    for(int i = 0; i < num.length - 1; i++) {
+	        if(num[i + 1] - num[i] == 1) {
+	            local++;
+	            longest = Math.max(longest, local);
+	        } else {
+	            local = 1;
+	        }
+	    }
+	    return longest;
+	}
