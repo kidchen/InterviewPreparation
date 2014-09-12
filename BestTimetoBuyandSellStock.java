@@ -35,3 +35,37 @@ public class Solution {
         return global;
     }
 }
+
+
+// return dates
+
+public class StockI {
+	
+	public static void main(String[] args) {
+		int[] prices = {9,8,7,6,5, 10};
+		maxProfit(prices);
+	}
+
+    public static void maxProfit(int[] prices) {
+       if(prices.length == 0) {
+    	   return;
+       }
+       int min = prices[0];          
+       int maxProfit = 0;               
+       int[] dates = new int[2];
+       int buyDate = 0;      
+       for(int i=1; i<prices.length; i++){            
+            if(prices[i] < min) {
+                 min = prices[i];
+                 buyDate = i;
+            }          
+            int currentProfit = prices[i] - min;
+            if(currentProfit > maxProfit) {
+                 maxProfit = currentProfit;
+                 dates[0] = buyDate; dates[1] = i;
+            }
+       }
+       System.out.println(dates[0] + " , " + dates[1]);
+       return;
+   }
+}
