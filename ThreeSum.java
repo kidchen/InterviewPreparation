@@ -20,7 +20,7 @@ public class Solution {
         return result;
     }
     
-    ArrayList<ArrayList<Integer>> twoSum(int[] num, int target, int end) {
+    private ArrayList<ArrayList<Integer>> twoSum(int[] num, int target, int end) {
         ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
         if(num.length < 2 || num == null) return result;
         int start = 0;
