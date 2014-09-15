@@ -11,6 +11,8 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
 1,1,5 → 1,5,1
 */
 
+// O(n), O(1)
+
 public class Solution {
     public void nextPermutation(int[] num) {
         if(num.length <= 1) return;
@@ -52,4 +54,46 @@ public class Solution {
 }
 
 
-//eas
+// easier to think:
+/* 1. from right to left, find the first digit (p) which violate the increase trend
+ * 2. from right to left, find the first digit which is larger than p, call it q
+ * 3. swap p and q
+ * 4. reverse all digits from the next element after position p
+ */
+
+public class Solution {
+    public void nextPermutation(int[] num) {
+        if (num == null || num.length < 2) {
+            return;
+        }
+        int p = num.length - 2;
+        int q = num.length - 1;
+        // need to add "=" for duplicates elements
+        while(p >= 0 && num[p] >= num[p + 1]) {
+            p--;
+        }
+        if(p >= 0) {
+            // need to add "=" for duplicates elements
+            while(q > p && num[q] <= num[p]) {
+                q--;
+            }
+            int temp = num[q];
+            num[q] = num[p];
+            num[p] = temp;
+        }
+        // reverse the elements from the one after position p (p + 1)
+        reverse(num, p + 1);
+        return;
+    }
+    
+    private void reverse(int[] num, int start) {
+        int end = num.length - 1;
+        while(start < end) {
+            int temp = num[end];
+            num[end] = num[start];
+            num[start] = temp;
+            start++;
+            end--;
+        }
+    }
+}
