@@ -38,7 +38,6 @@ public class Solution {
     
     private ArrayList<ArrayList<Integer>> twoSum(int[] num, int target, int end) {
         ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
-        if(num.length < 2 || num == null) return result;
         int start = 0;
         while(start < end) {
             int sum = num[start] + num[end];
