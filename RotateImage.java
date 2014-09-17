@@ -18,22 +18,23 @@ public class Solution {
         int row = matrix.length;
         int col = row;
         // flip top to bottom
-        for(int i=0; i<row/2; i++){
-            for(int j=0; j<col; j++){
-                swap(matrix,i,j,row-i-1,j);
+        for(int i = 0; i < row / 2; i++) {
+            for(int j = 0; j < col; j++) {
+                swap(matrix, i, j, row - i - 1, j);
             }
         }
-        for(int i=0; i<row; i++){
-            for(int j=i; j<col; j++){                  // j=i !!!
-                swap(matrix,i,j,j,i);
+        for(int i = 0; i < row; i++) {
+             // !!! j = i !!!
+            for(int j = i; j < col; j++) {
+                swap(matrix, i, j, j, i);
             }
         }
     }
     
-    void swap(int[][] matrix, int r1, int c1, int r2, int c2){
+    void swap(int[][] matrix, int r1, int c1, int r2, int c2) {
         int temp = matrix[r1][c1];
-        matrix[r1][c1]=matrix[r2][c2];
-        matrix[r2][c2]=temp;
+        matrix[r1][c1] = matrix[r2][c2];
+        matrix[r2][c2] = temp;
     }
 }
 
