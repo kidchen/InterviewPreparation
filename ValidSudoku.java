@@ -1,4 +1,69 @@
-// with three passes
+/*
+Determine if a Sudoku is valid, according to: Sudoku Puzzles - The Rules.
+
+The Sudoku board could be partially filled, where empty cells are filled with the character '.'.
+
+
+A partially filled sudoku which is valid.
+
+Note:
+A valid Sudoku board (partially filled) is not necessarily solvable. Only the filled cells need to be validated.
+*/
+
+
+// with three passes (actually 27 times check), O(3*n^2), n=9
+
+public class Solution {
+    public boolean isValidSudoku(char[][] board) {
+        if(board == null || board.length != 9 || board[0].length != 9) {
+            return false;
+        }
+        // each row
+        for(int i = 0; i < 9; i++) {
+            boolean[] num = new boolean[9];
+            for(int j = 0; j < 9; j++) {
+                if(board[i][j] != '.') {
+                    if(num[(int)(board[i][j] - '1')]) {
+                        return false;
+                    } 
+                    num[(int)(board[i][j] - '1')] = true;
+                }
+            }
+        }
+        // each col
+        for(int i = 0; i < 9; i++) {
+            boolean[] num = new boolean[9];
+            for(int j = 0; j < 9; j++) {
+                if(board[j][i] != '.') {
+                    if(num[(int)(board[j][i] - '1')]) {
+                        return false;
+                    } 
+                    num[(int)(board[j][i] - '1')] = true;
+                }
+            }
+        }
+        // each block
+        for(int block = 0; block < 9; block++) {
+            boolean[] num = new boolean[9];
+            // for row
+            for(int i = block/3*3; i < block/3*3 + 3; i++) {
+                // for col
+                for(int j = block%3*3; j < block%3*3 + 3; j++) {
+                    if(board[i][j] != '.') {
+                        if(num[(int)(board[i][j] - '1')]) {
+                            return false;
+                        } 
+                        num[(int)(board[i][j] - '1')] = true;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+}
+
+
+// Or use HashSet to store the numbers:
 
 public class Solution {
     public boolean isValidSudoku(char[][] board) {
