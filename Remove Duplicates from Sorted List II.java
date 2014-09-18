@@ -81,15 +81,16 @@ public class Solution {
         ListNode cur = head;
         // !!! outer while cur != null !!!
         while(cur != null) {
-            // find duplicates
+            // find duplicates: the first non-duplicate node is cur.next
             while(cur.next != null && cur.next.val == pre.next.val) {
                 cur = cur.next;
             }
-            // if there is no duplicates this time
+            // if there is no duplicates this time, move pre to its next node
             if(pre.next == cur) {
-                pre = cur;
+                pre = pre.next;
             } else {
                 // there is duplicates, skip them
+                // !!! DO NOT ADD pre = pre.next, eg: 1-1-2-2-... !!!
                 pre.next = cur.next;
             }
             // each while loop, move on the cur node
@@ -99,3 +100,4 @@ public class Solution {
     }
 }
 
+// O(n), O(1) space
