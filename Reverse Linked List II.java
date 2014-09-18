@@ -1,3 +1,18 @@
+/*
+Reverse a linked list from position m to n. Do it in-place and in one-pass.
+
+For example:
+Given 1->2->3->4->5->NULL, m = 2 and n = 4,
+
+return 1->4->3->2->5->NULL.
+
+Note:
+Given m, n satisfy the following condition:
+1 ≤ m ≤ n ≤ length of list.
+*/
+
+// O(n), O(1) space -- one pass
+
 /**
  * Definition for singly-linked list.
  * public class ListNode {
@@ -11,34 +26,35 @@
  */
 public class Solution {
     public ListNode reverseBetween(ListNode head, int m, int n) {
-        if(head == null || head.next == null) return head;
+        if(head == null) {
+            return head;
+        }
+        // find the m position node
+        int count = 1;
         ListNode dummy = new ListNode(0);
         dummy.next = head;
-        ListNode preNode = dummy;
-        int i = 1;
-        while(preNode != null && i < m){
-            preNode = preNode.next;
-            i++;
+        ListNode pre = dummy;
+        while(count < m) {
+            pre = pre.next;
+            count++;
         }
-        // now i = m
-        ListNode mNode = preNode.next;
-        ListNode cur = mNode.next;
-        while(cur != null && i < n){
-            // store cur's next node 
-            ListNode curNext = cur.next;
-            // use preNode and its next (preNode is static, so it is better to use)
-            cur.next = preNode.next;
-            preNode.next = cur;
-            // use mNode and its next (mNode is also static)
-            mNode.next = curNext;
-            // cur is changable
-            cur = curNext;
-            i++;
+        // do the reverse: pre-> reverse[first->cur->next] ...
+        ListNode first = pre.next;
+        ListNode cur = pre.next.next;
+        while(count < n) {
+            ListNode next = cur.next;
+            cur.next = pre.next;
+            pre.next = cur;
+            cur = next;
+            count++;
+            if(count == n) {
+                first.next = next;
+            }
         }
-        
         return dummy.next;
     }
 }
+
 
 // general reverse all:
 // by iterative: Time O(n), Space:O(1)
