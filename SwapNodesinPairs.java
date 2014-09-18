@@ -19,7 +19,7 @@ Your algorithm should use only constant space. You may not modify the values in 
  * }
  */
  
-// recursion
+// recursion, using extra O(n) space when do recursion
 public class Solution {
     public ListNode swapPairs(ListNode head) {
         if(head == null) 
@@ -35,7 +35,7 @@ public class Solution {
     }
 }
 
-// general
+// general, O(n), O(1) space
 
 /**
  * Definition for singly-linked list.
@@ -53,22 +53,22 @@ public class Solution {
         if(head == null || head.next == null) {
             return head;
         }
+        // !!! need to use dummy node, since head already been changed by cur !!!
         ListNode result = new ListNode(0);
         result.next = head;
         ListNode pre = result;
         ListNode cur = head;
         while(cur != null && cur.next != null) {
-            // 1-2-3-4 --> 2-1-4-3
             ListNode next = cur.next.next;
-            // !!! 2.next = 1 !!!
             cur.next.next = cur;
-            // 2-1-...
+            // !!! add this time's two nodes into result !!!
             pre.next = cur.next;
             if(next != null && next.next != null) {
                 cur.next = next.next;
             } else {
                 cur.next = next;
             }
+            // !!! move the pre node: pre-1-2-... --> 2-1(pre)-... !!!
             pre = cur;
             cur = next;
         }
