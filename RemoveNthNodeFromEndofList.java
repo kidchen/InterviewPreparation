@@ -74,7 +74,7 @@ public class Solution {
         if(i < n) {
             return head;
         }
-        // if n equals to the number of list nodes (that is, we remove the head)
+        // !!! if n equals to the number of list nodes (that is, we remove the head) !!!
         if(fast == null) {
             return head.next;
         }
