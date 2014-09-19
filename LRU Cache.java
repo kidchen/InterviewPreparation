@@ -1,102 +1,113 @@
+/*
+Design and implement a data structure for Least Recently Used (LRU) cache. 
+It should support the following operations: get and set.
+
+get(key) - Get the value (will always be positive) of the key if the key exists in the cache, otherwise return -1.
+set(key, value) - Set or insert the value if the key is not already present. 
+When the cache reached its capacity, it should invalidate the least recently used item before inserting a new item.
+*/
+
+// Both get(key) and set(key, value) cost O(1) time, we need O(n) space to set the hashmap
+
+// Thought:
+// 1. use the combination of hashmap<key, node<key, value>> & double-linkedlist<node<key, value>>
+// 2. get: check if the corresponding value(node) of the key is exist, if so, is it least, if so, reorder the list
+// 3. set: check if the corresponding value(node) of the key is exist, if NOT, add new node
+//         --> if there is no extra space, delete the least-->during the deletion, check if the capacity is 1 !!!
+
 public class LRUCache {
-    // define the new class Node
+    // define the Node class, which is double-linked-list-node with both key and value
     class Node {
-        Node pre;
-        Node next;
         int key;
         int val;
-        public Node(int key, int value) {
+        Node pre;
+        Node next;
+        public Node(int key, int val) {
             this.key = key;
-            this.val = value;
+            this.val = val;
         }
     }
     
-    // initial the values
+    // !!! have initial these parameters because later more than one method will use them !!!
     private int num;
     private int capacity;
+    private Node most, least;
     private HashMap<Integer, Node> map;
-    // first: less used, last: recently used
-    private Node first, last;
     
-    // implement the cache
     public LRUCache(int capacity) {
-        int num = 0;
         this.capacity = capacity;
-        // !!! new a hashmap !!!
+        // don't need to declear their types
+        num = 0;
         map = new HashMap<Integer, Node>();
-        first = null;
-        last = null;
+        most = null;
+        least = null;
     }
     
-    // implement the get method
     public int get(int key) {
-        // get the node by the key
         Node node = map.get(key);
-        // if the key is not exist
         if(node == null) {
             return -1;
-        } else if(node != last) {
-            // if node is not the most recently used (need to modify the list)
-            // delete the node from the list and add it to the first
-            if(node == first) {
-                first = first.next;
+        } else if(node != most) {
+            if(node == least) {
+                least = least.next;
+                least.pre = null;
             } else {
                 node.pre.next = node.next;
+                node.next.pre = node.pre;
             }
-            // add to first
-            node.next.pre = node.pre;
-            last.next = node;
-            node.pre = last;
+            node.pre = most;
             node.next = null;
-            last = node;
+            most.next = node;
+            most = node;
         }
-        // return value(if key is the recent one, directly return the val)
         return node.val;
     }
     
     public void set(int key, int value) {
-        // first check if the key is existed
         Node node = map.get(key);
-        // if exist
         if(node != null) {
+            // no need to modify map, since map's value stored node
             node.val = value;
-            // modify the position of the node in the list
-            if(node != last) {
-                if(node == first) {
-                    first = first.next;
+            if(node != most) {
+                if(node == least) {
+                    least = least.next;
+                    least.pre = null;
                 } else {
                     node.pre.next = node.next;
+                    node.next.pre = node.pre;
                 }
-                node.next.pre = node.pre;
-                last.next = node;
-                node.pre = last;
+                node.pre = most;
                 node.next = null;
-                last = node;
+                most.next = node;
+                most = node;
             }
         } else {
-            // this is a new kv pair int he list
             Node newNode = new Node(key, value);
-            // check if there is any space to add a new node
             if(num >= capacity) {
-                map.remove(first.key);
-                first = first.next;
-                if(first != null) {
-                    first.pre = null;
+                // delete least
+                map.remove(least.key);
+                least = least.next;
+                // !!! check least, if the capacity = 1 and least is removed, put most = null !!!
+                if(least != null) {
+                    least.pre = null;
                 } else {
-                    // in this case: null <=> key(deleted) <=> null
-                    last = null;
+                    // before delete least, both least & most = oldNode, now what we actually do is
+                    // to replace it with newNode, so we also need to set most as null
+                    most = null;
                 }
                 num--;
             }
-            // if there is only one position(last) in the list and yet been valued
-            if(first == null || last == null) {
-                first = newNode;
+            // add newNode to most
+            // !!! if the capacity = 1, that is least == null, the same as most == null, set 
+            // least = newNode, here we won't set most = newNode since later we will do it !!!
+            if(least == null || most == null) {
+                least = newNode;
             } else {
-                last.next = newNode;
+                most.next = newNode;
             }
-            newNode.pre = last;
+            newNode.pre = most;
             newNode.next = null;
-            last = newNode;
+            most = newNode;
             map.put(key, newNode);
             num++;
         }
