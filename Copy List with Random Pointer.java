@@ -1,5 +1,7 @@
 // solution 1 : O(n), O(n)
 // using HashMap:
+// first while loop, copy the list and build the map, then in the second loop, add random node to each node
+// use a hashmap to store <oldNode, newNode> so that when we get map.get(oldNode.random), we can get the corresponding node in new
 
 /**
  * Definition for singly-linked list with a random pointer.
@@ -11,36 +13,30 @@
  */
 public class Solution {
     public RandomListNode copyRandomList(RandomListNode head) {
-        if(head == null) return null;
-        // map(oldListNode, newListNode)
+        if(head == null) {
+            return null;
+        }
+        RandomListNode dummy = new RandomListNode(0);
+        RandomListNode pre = dummy;
+        RandomListNode cur = head;
         HashMap<RandomListNode, RandomListNode> map = new HashMap<RandomListNode, RandomListNode>();
-        // newHead: will be returned
-        RandomListNode newHead = new RandomListNode(head.label);
-        // initial the head of old & new list in the map
-        map.put(head, newHead);
-        // pre: running on the new node
-        RandomListNode pre = newHead;
-        // nextNode: running on the old node (faster than pre by one node)
-        RandomListNode nextNode = head.next;
-        // create the map
-        while(nextNode != null) {
-            // add value to the new node
-            RandomListNode newNode = new RandomListNode(nextNode.label);
-            map.put(nextNode, newNode);
+        // copy the list, and build the map<oldNode, newNode>
+        while(cur != null) {
+            RandomListNode newNode = new RandomListNode(cur.label);
             pre.next = newNode;
             pre = pre.next;
-            nextNode = nextNode.next;
+            map.put(cur, newNode);
+            cur = cur.next;
         }
-        // put nextNode (old list) back to the head
-        nextNode = head;
-        // second scan: add random node
-        RandomListNode newRandom = newHead;
-        while(nextNode != null) {
-            newRandom.random = map.get(nextNode.random);
-            newRandom = newRandom.next;
-            nextNode = nextNode.next;
+        RandomListNode oldNode = head;
+        RandomListNode random = dummy.next;
+        while(oldNode != null) {
+            // !!! get the corresponding random node in new !!!
+            random.random = map.get(oldNode.random);
+            oldNode = oldNode.next;
+            random = random.next;
         }
-        return newHead;
+        return dummy.next;
     }
 }
 
@@ -48,8 +44,8 @@ public class Solution {
 
 // solution 2 : O(n), O(1)
 // old1 -> new1 -> old2 -> new2 -> old3 -> new3
-// node.next.random = node.random.next
-// split two node
+// !!! node.next.random = node.random.next !!!
+// split into two lists
 
 /**
  * Definition for singly-linked list with a random pointer.
@@ -61,35 +57,36 @@ public class Solution {
  */
 public class Solution {
     public RandomListNode copyRandomList(RandomListNode head) {
-        if(head == null) return null;
-        RandomListNode node = head;
-        while(node != null) {
-            // !!! node.label, not head.label !!!
-            RandomListNode newNode = new RandomListNode(node.label);
-            newNode.next = node.next;
-            node.next = newNode;
-            node = node.next.next;
+        if(head == null) {
+            return null;
         }
-        node = head;
-        while(node != null) {
+        RandomListNode cur = head;
+        while(cur != null) {
+            RandomListNode newNode = new RandomListNode(cur.label);
+            RandomListNode temp = cur.next;
+            cur.next = newNode;
+            newNode.next = temp;
+            cur = temp;
+        }
+        cur = head;
+        while(cur != null) {
             // !!! have to judge whether node.random == null !!!
             // eg: only one element 1, 1.random == null, in this case node.random.next not exist
             // wrong case : {-1, #}
-            if(node.random != null)
-                node.next.random = node.random.next;
-            node = node.next.next;
+            if(cur.random != null) {
+                cur.next.random = cur.random.next;
+            }
+            cur = cur.next.next;
         }
-        node = head;
-        RandomListNode newHead = head.next;
-        while(node != null) {
-            RandomListNode newNode = node.next;
-            node.next = newNode.next;
-            if(newNode.next != null)
-                newNode.next = newNode.next.next;
-            node = node.next;
+        RandomListNode dummy = new RandomListNode(0);
+        RandomListNode pre = dummy;
+        cur = head;
+        while(cur != null) {
+            pre.next = cur.next;
+            cur.next = cur.next.next;
+            pre = pre.next;
+            cur = cur.next;
         }
-        return newHead;
+        return dummy.next;
     }
 }
-
-
