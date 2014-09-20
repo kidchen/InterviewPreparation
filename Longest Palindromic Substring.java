@@ -1,31 +1,49 @@
+/*
+Given a string S, find the longest palindromic substring in S. You may assume that the maximum length of S is 1000, 
+and there exists one unique longest palindromic substring.
+*/
+
+// O(2n - 1) * O(n) = O(n^2)
+// O(1) space cost --> unless use HashSet to store all non-duplicates result O(result numbers)
+
 public class Solution {
     public String longestPalindrome(String s) {
-        if(s == null || s.length() == 0) return "";
+        if(s == null || s.length() == 0 || s.length() == 1) {
+            return s;
+        }
         String result = "";
-        int max = 0;
-        // check each char and the blank between the chars
         for(int i = 0; i < s.length() * 2 - 1; i++) {
             int left = i / 2;
             int right = i / 2;
-            // !!! i % 2 == 1 !!! NOT right % 2 !!! check if this is the blank position !!!
             if(i % 2 == 1) {
                 right++;
             }
-            String palindrome = helper(s, left, right);
-            if(max < palindrome.length()) {
-                max = palindrome.length();
-                result = palindrome;
+            String temp = helper(s, left, right);
+            // more than one result:
+            /*
+            if(temp.length() >= result.length()) {
+                -- store it into the result or just print it out
+                -- if duplicate result:
+                   store the result into a HashSet
+            }
+            */
+            if(temp.length() > result.length()) {
+                result = temp;
             }
         }
         return result;
     }
     
-    String helper(String s, int left, int right) {
-        while(left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
-            left--;
-            right++;
+    private String helper(String s, int left, int right) {
+        while(left >= 0 && right < s.length()) {
+            if(s.charAt(left) == s.charAt(right)) {
+                left--;
+                right++;
+            } else {
+                break;
+            }
         }
-        // !!! substring(start, end) : return from start to end - 1 !!!
+        // !!! [substring) !!!
         return s.substring(left + 1, right);
     }
 }
