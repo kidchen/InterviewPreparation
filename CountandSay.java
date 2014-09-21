@@ -1,33 +1,41 @@
-package leetcode;
+/*
+The count-and-say sequence is the sequence of integers beginning as follows:
+1, 11, 21, 1211, 111221, ...
 
-public class CountAndSay {
-	public static void main(String[] args) {
-		System.out.println(countAndSay(6));
-	}
-	
-    public static String countAndSay(int n) {
-        if(n<=0) return null;
-        // have to use a String to control the inner for loop
-        String s = "1";
-        int counter = 1;
-        
-        for(int i=0; i<n-1; i++){
-        	// new in outer for loop (each nth),
-        	// otherwise the result will be the sum of the previous
-        	StringBuilder result = new StringBuilder();
-            for(int j=0; j<s.length(); j++){
-            	// check s.length()-1 for charAt(j+1)
-                if(j<s.length()-1 && s.charAt(j)==s.charAt(j+1)){
-                    counter++;
-                }else{
-                    result.append(counter).append(s.charAt(j));
-                    counter = 1;
-                }
-            }
-            // toString here so that we can use s to control the inner for loop next time
-            s=result.toString();
+1 is read off as "one 1" or 11.
+11 is read off as "two 1s" or 21.
+21 is read off as "one 2, then one 1" or 1211.
+Given an integer n, generate the nth sequence.
+
+Note: The sequence of integers will be represented as a string.
+*/
+
+// O(n*length), O(length) space cost. length means the length of the result
+
+public class Solution {
+    public String countAndSay(int n) {
+        if(n <= 0) {
+            return "";
         }
-        return s;
+        String result = "1";
+        if(n == 1) {
+            return result;
+        }
+        int count = 1;
+        for(int i = 2; i <= n; i++) {
+        	// !!! new the buffer out of the inner for loop, otherwise the result will be the sum of the previous all !!!
+            StringBuffer temp = new StringBuffer();
+            for(int j = 0; j < result.length(); j++) {
+                while(j + 1 < result.length() && result.charAt(j) == result.charAt(j + 1)) {
+                    count++;
+                    j++;
+                }
+                temp.append(count);
+                temp.append(result.charAt(j));
+                count = 1;
+            }
+            result = temp.toString();
+        }
+        return result;
     }
-    
 }
