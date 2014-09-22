@@ -1,41 +1,60 @@
+/*
+Given an absolute path for a file (Unix-style), simplify it.
+
+For example,
+path = "/home/", => "/home"
+path = "/a/./b/../../c/", => "/c"
+click to show corner cases.
+
+Corner Cases:
+Did you consider the case where path = "/../"?
+In this case, you should return "/".
+Another corner case is the path might contain multiple slashes '/' together, such as "/home//foo/".
+In this case, you should ignore redundant slashes and return "/home/foo".
+*/
+
+// O(n), O(n) space for the stack
+
+
 public class Solution {
     public String simplifyPath(String path) {
         if(path == null || path.length() == 0) {
-            return "";
+            return path;
         }
         LinkedList<String> stack = new LinkedList<String>();
-        StringBuilder result = new StringBuilder();
+        StringBuffer result = new StringBuffer();
         int i = 0;
         while(i < path.length()) {
-            int index = i;
-            StringBuilder temp = new StringBuilder();
-            // input path if current char is not "/"
+            StringBuffer subpath = new StringBuffer();
             while(i < path.length() && path.charAt(i) != '/') {
-                temp.append(path.charAt(i));
+                subpath.append(path.charAt(i));
                 i++;
             }
-            // index != i means we DO while loop --> char != "/" --> path
-            if(index != i) {
-                // check the path: ".." pop; "." ignore; others push
-                String tempstr = temp.toString();
-                if(tempstr.equals("..")) {
-                    if(!stack.isEmpty()) {
+            // if subpath is not only a '/'
+            if(subpath.length() > 0) {
+                String temp = subpath.toString();
+                // !!! have to use .equals rather than == !!!
+                // !!! can't directly check (equals && isEmpty()), since eg: /.. !!!
+                if(temp.equals("..")) {
+                    if(!stack.isEmpty()){
                         stack.pop();
                     }
-                } else if(!tempstr.equals(".")) {
-                    stack.push(tempstr);
+                } else if(!temp.equals(".")) {
+                    stack.push(temp);
                 }
             }
             i++;
         }
-        // can't directly use while(!stack.isEmpty()), since we need reverse order for each pop
-        // and also need to add "/" between each of them
-        if(!stack.isEmpty()) {
-            String[] str = stack.toArray(new String[stack.size()]);
-            // !!! have to use j, since i have already been defined above !!!
-            for(int j = str.length - 1; j >= 0; j--) {
-                result.append("/" + str[j]);
-            }
+        // !!!can't directly use while and later do reverse, since the path string itself should not be reversed !!!
+        String[] reverse = new String[stack.size()];
+        int j = 0;
+        while(!stack.isEmpty()) {
+            reverse[j] = stack.pop();
+            j++;
+        }
+        for(j = reverse.length - 1; j >= 0; j--) {
+            result.append("/");
+            result.append(reverse[j]);
         }
         if(result.length() == 0) {
             return "/";
