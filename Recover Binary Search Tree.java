@@ -1,3 +1,14 @@
+/*
+Two elements of a binary search tree (BST) are swapped by mistake.
+
+Recover the tree without changing its structure.
+
+Note:
+A solution using O(n) space is pretty straight forward. Could you devise a constant space solution?
+*/
+
+// O(n), O(logn) for recursion stack
+
 /**
  * Definition for binary tree
  * public class TreeNode {
@@ -9,41 +20,39 @@
  */
 public class Solution {
     public void recoverTree(TreeNode root) {
-        if(root == null) return;
-        // !!! since java is pass by value, we need to set pointers as arraylist to !!!
-        // !!! pass nodes in global !!!
-        ArrayList<TreeNode> mistake = new ArrayList<TreeNode>();
+        if(root == null) {
+            return;
+        }
         ArrayList<TreeNode> pre = new ArrayList<TreeNode>();
-        // !!! have to set pre as null at first, since we need to check its node later !!!
+        ArrayList<TreeNode> mistake = new ArrayList<TreeNode>();
+        // set pre as null at first
         pre.add(null);
-        helper(mistake, pre, root);
-        // swap value
+        helper(root, pre, mistake);
         if(mistake.size() != 0) {
             int temp = mistake.get(0).val;
             mistake.get(0).val = mistake.get(1).val;
             mistake.get(1).val = temp;
         }
+        return;
     }
     
-    void helper(ArrayList<TreeNode> mistake, ArrayList<TreeNode> pre, TreeNode root) {
-        if(root == null) return;
-        helper(mistake, pre, root.left);
-        // find wrong nodes
+    private void helper(TreeNode root, ArrayList<TreeNode> pre, ArrayList<TreeNode> mistake) {
+        if(root == null) {
+            return;
+        }
+        // do the inorder traversal
+        helper(root.left, pre, mistake);
         if(pre.get(0) != null && pre.get(0).val > root.val) {
-            // have to set two nodes when there is no mistake recorded
-            if(mistake.size() == 0) {
+            if(mistake.size() > 0) {
+                // careful of using set()
+                mistake.set(1, root);
+            } else {
                 mistake.add(pre.get(0));
                 mistake.add(root);
-            } else {
-                // !!! find the second wrong place, reset the second mistake by the new one !!!
-                mistake.set(1, root);
             }
         }
-        // !!! record the current node as pre so that we can move on traversal to the right nodes !!!
+        // set pre's value here, since after dfs the most left, we can give pre the value
         pre.set(0, root);
-        helper(mistake, pre, root.right);
+        helper(root.right, pre, mistake);
     }
 }
-
-
-// time: O(n). space: O(log n)
