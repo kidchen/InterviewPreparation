@@ -49,4 +49,8 @@ public class Solution {
 
 
 
-// 
+// if we only need to check two strings:
+// Use a hashmap<Character, Integer> to store each element and its appearance times in one string, and then
+// traverse the other string and check if elements and its appearance times are the same with the hashmap(remove when the same),
+// finally check the hashmap, if it is empty, then return true.
+// This cost O(m+n) time and O(m) space, smaller than the sort method (m, n represents the length of two strings)
