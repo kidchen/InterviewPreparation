@@ -1,3 +1,11 @@
+/*
+Given two binary trees, write a function to check if they are equal or not.
+
+Two binary trees are considered equal if they are structurally identical and the nodes have the same value.
+*/
+
+// O(n), O(logn) for the stack in recursion
+
 /**
  * Definition for binary tree
  * public class TreeNode {
