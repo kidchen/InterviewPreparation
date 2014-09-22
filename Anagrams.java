@@ -1,29 +1,44 @@
+/*
+Given an array of strings, return all groups of strings that are anagrams.
+
+Note: All inputs will be in lower-case.
+*/
+
+// O(n)*O(klogk) = O(nklogk), O(nk) space for the hashmap
+// n strings and the longest one has k char
+
 public class Solution {
-    public ArrayList<String> anagrams(String[] strs) {
-        ArrayList<String> result = new ArrayList<String>();
-        if(strs == null || strs.length == 0) return result;
+    public List<String> anagrams(String[] strs) {
+        List<String> result = new ArrayList<String>();
+        if(strs == null || strs.length == 0) {
+            return result;
+        }
         HashMap<String, ArrayList<String>> map = new HashMap<String, ArrayList<String>>();
-        // build the map
         for(int i = 0; i < strs.length; i++) {
-            // eachStr: each string in strs[]
-            String eachStr = strs[i];
-            // convert string into char[] so that we can sort it
-            char[] strChar = eachStr.toCharArray();
-            Arrays.sort(strChar);
-            // str: string after sorted
-            String str = new String(strChar);
-            // if there are same keys (str is a key in the map)
-            if(map.containsKey(str)) {
-                map.get(str).add(strs[i]);
+            char[] item = strs[i].toCharArray();
+            Arrays.sort(item);
+            // !!! DON'T USE "String key = item.toString()", it will return char with "," and space !!!
+            String key = new String(item);
+            if(map.containsKey(key)) {
+                map.get(key).add(strs[i]);
             } else {
-                // this is a new key to the map
-                ArrayList<String> list = new ArrayList<String>();
-                list.add(strs[i]);
-                map.put(str, list);
+                ArrayList<String> newValue = new ArrayList<String>();
+                newValue.add(strs[i]);
+                map.put(key, newValue);
             }
         }
-        // check the map
-        // !!! FAMILIAR WITH THE ITERATOR !!!
+        for(String s : map.keySet()) {
+            if(map.get(s).size() > 1) {
+                // !!! addAll can be used to add a set of items in an arrayList !!!
+                result.addAll(map.get(s));
+            }
+        }
+        return result;
+    }
+}
+
+
+// the last part can also use an iterator:
         Iterator iter = map.values().iterator();
         while(iter.hasNext()) {
             // need what type, just convert the type before iter.next()
@@ -31,6 +46,7 @@ public class Solution {
             // use addAll to add a list (not an element)
             if(item.size() > 1) result.addAll(item);
         }
-        return result;
-    }
-}
+
+
+
+// 
