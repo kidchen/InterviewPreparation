@@ -55,6 +55,7 @@ public class Solution {
         if(Math.abs(left - right) >= 2) {
             return -1;
         }
+        // !!! return the MAX one + 1 as the depth !!!
         return Math.max(left, right) + 1;
     }
 }
