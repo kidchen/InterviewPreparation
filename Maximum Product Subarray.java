@@ -20,6 +20,7 @@ public class Solution {
         int global = A[0];
         for(int i = 1; i < A.length; i++) {
             int local_max_copy = local_max;
+            // max / min of (A[i], A[i]*local_min, A[i]*local_max)
             local_max = Math.max(Math.max(A[i], A[i] * local_max), A[i] * local_min);
             local_min = Math.min(Math.min(A[i], A[i] * local_max_copy), A[i] * local_min);
             global = Math.max(global, local_max);
