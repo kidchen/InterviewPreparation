@@ -50,6 +50,7 @@ public class Solution {
                 }
                 if(map.containsKey(S.charAt(left))) {
                     map.put(S.charAt(left), map.get(S.charAt(left)) + 1);
+                    // when the left one is the unique one included in T, count--, break the inner while loop
                     if(map.get(S.charAt(left)) > 0) {
                         count--;
                     }
