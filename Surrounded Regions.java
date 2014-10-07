@@ -17,6 +17,7 @@ X O X X
 */
 
 // BFS with a queue:
+// search four sides first, then do the BFS for all 'O' on the sides, remark them as 'S'
 // O(mn), O(m+n) space cost
 
 public class Solution {
