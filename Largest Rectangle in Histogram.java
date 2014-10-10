@@ -33,6 +33,7 @@ public class Solution {
         // for this solution, we just do another while when stack is not empty after the for loop
         while(!stack.isEmpty()) {
             int index = stack.pop();
+            // i --> height.length, imagine we add a 0 at the end of height[]
             max = Math.max(max, stack.isEmpty() ? height.length * height[index] : (height.length - stack.peek() - 1) * height[index]);
         }
         return max;
