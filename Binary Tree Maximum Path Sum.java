@@ -13,7 +13,7 @@ Return 6.
 */
 
 // only return positive result !? --> NO! We need to check the value's sign because if its negative, 
-//                                    the result will be reduced, which means we cannot find the max !!
+//                                    the result will be reduced, so we drop the subtrees that sum negative !!
 // O(n), O(logn) space cost
 
 /**
@@ -27,7 +27,9 @@ Return 6.
  */
 public class Solution {
     public int maxPathSum(TreeNode root) {
-        if(root == null) return 0;
+        if(root == null) {
+              return 0;
+        }
         ArrayList<Integer> result = new ArrayList<Integer>();
         // !!! have to use Integer.MIN_VALUE, eg: {-3} !!!
         result.add(Integer.MIN_VALUE);
@@ -38,8 +40,10 @@ public class Solution {
     // !!! have to return int value so that we can calculate the max value in 
     // left or right subtree in recursion !!!
     int helper(TreeNode root, ArrayList<Integer> result) {
-        if(root == null) return 0;
-        // inorder traversal
+        if(root == null) {
+              return 0;
+        }
+        // kind of a postorder traversal
         int left = helper(root.left, result);
         int right = helper(root.right, result);
         // !!! have to check whether left/right > 0 !!!
@@ -47,7 +51,8 @@ public class Solution {
         if(cur > result.get(0)) {
             result.set(0, cur);
         }
-        // !!! return the path sum of cur node + max(left, right) --> still need to check the positive/negative !!!
+        // !!! return the path sum of cur node + max(left, right): as a subtree root, it can only choose one path of the two
+        //     --> still need to check the positive/negative !!!
         return root.val + Math.max(left, Math.max(right, 0));
     }
 }
