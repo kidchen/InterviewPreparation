@@ -35,29 +35,31 @@ public class Solution {
             return result;
         }
         ArrayList<Integer> path = new ArrayList<Integer>();
-        path.add(root.val);
-        helper(root, sum - root.val, path, result);
+        helper(root, sum, result, path);
         return result;
     }
     
-    private void helper(TreeNode root, int sum, ArrayList<Integer> path, ArrayList<ArrayList<Integer>> result) {
+    private void helper(TreeNode root, int sum, ArrayList<ArrayList<Integer>> result, ArrayList<Integer> path) {
+        // !!! don't forget to check null !!!
         if(root == null) {
             return;
         }
-        // !!! careful the condition is sum == 0 !!!
-        if(root.left == null && root.right == null && sum == 0) {
-            // !!! new an arrayList !!!
+        if(root.left == null && root.right == null && root.val == sum) {
+            path.add(root.val);
+            // !!! have to use new, because arraylist is an object !!!
             result.add(new ArrayList<Integer>(path));
+            // !!! add remove each time !!!
+            path.remove(path.size() - 1);
             return;
         }
         if(root.left != null) {
-            path.add(root.left.val);
-            helper(root.left, sum - root.left.val, path, result);
+            path.add(root.val);
+            helper(root.left, sum - root.val, result, path);
             path.remove(path.size() - 1);
         }
         if(root.right != null) {
-            path.add(root.right.val);
-            helper(root.right, sum - root.right.val, path, result);
+            path.add(root.val);
+            helper(root.right, sum - root.val, result, path);
             path.remove(path.size() - 1);
         }
     }
