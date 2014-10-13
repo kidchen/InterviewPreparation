@@ -10,11 +10,13 @@ public class Solution {
             for(int j = 0; j <= i; j++) {
                 if(dict[j][i]) {
                     // !!! compare with "result[j]+1" means ????
+                    // --> !!!
                     result[i + 1] = Math.min(result[j] + 1, result[i + 1]);
                 }
             }
         }
         // !!! "-1" means ????
+        // --> think of "aaaa", we should return 0 rather than 1
         return result[s.length()] - 1;
     }
     
