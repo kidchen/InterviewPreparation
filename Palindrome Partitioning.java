@@ -1,39 +1,58 @@
-// DFS
+/*
+Given a string s, partition s such that every substring of the partition is a palindrome.
+
+Return all possible palindrome partitioning of s.
+
+For example, given s = "aab",
+Return
+
+  [
+    ["aa","b"],
+    ["a","a","b"]
+  ]
+*/
+
+// DFS: O(2^n), O(n) space
 
 public class Solution {
-    public ArrayList<ArrayList<String>> partition(String s) {
-        ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
-        ArrayList<String> list = new ArrayList<String>();
-        helper(s, result, list);
+    public List<List<String>> partition(String s) {
+        List<List<String>> result = new ArrayList<List<String>>();
+        if(s == null || s.length() == 0) {
+            return result;
+        }
+        List<String> item = new ArrayList<String>();
+        helper(s, result, item);
         return result;
     }
     
-    void helper(String s, ArrayList<ArrayList<String>> result, ArrayList<String> list) {
-        if(s.length() == 0){
-            result.add(new ArrayList<String>(list));
+    private void helper(String s, List<List<String>> result, List<String> item) {
+        if(s.length() == 0) {
+            result.add(new ArrayList<String>(item));
             return;
         }
+        /*
+        substring(include start, exclude end), substring(include start to the end)
+        */
         for(int i = 1; i <= s.length(); i++) {
-        // !!! substring, all lower case letters !!!
-            String left = s.substring(0,i);
-            if(isPalindrome(left)) {
-                list.add(left);
-                String right = s.substring(i);
-                helper(right, result, list);
-                list.remove(list.size() - 1);
+            String sub = s.substring(0, i);
+            if(isPalindrome(sub)) {
+                item.add(sub);
+                helper(s.substring(i), result, item);
+                // DFS: don't forget to remove the last element after the recursion
+                item.remove(item.size() - 1);
             }
         }
     }
     
-    boolean isPalindrome(String s) {
-        int i = 0;
-        int j = s.length() - 1;
-        while(i < j) {
-            if(s.charAt(i) != s.charAt(j)){
+    private boolean isPalindrome (String s) {
+        int start = 0;
+        int end = s.length() - 1;
+        while(start <= end) {
+            if(s.charAt(start) != s.charAt(end)) {
                 return false;
             }
-            i++;
-            j--;
+            start++;
+            end--;
         }
         return true;
     }
