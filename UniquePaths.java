@@ -34,6 +34,7 @@ public class Solution {
 }
 
 
+// DP solution:
 // improve: we can use a 1D array to store the result, so that the space cost will reduce to O(n)
 
 public class Solution {
