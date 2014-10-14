@@ -1,30 +1,44 @@
+/*
+Follow up for N-Queens problem.
+
+Now, instead outputting board configurations, return the total number of distinct solutions.
+
+*/
+
+// O(2^n), O(n) space for the int[]
+
 public class Solution {
     public int totalNQueens(int n) {
-        // !!! we can not use int result to pass result !!!
+        if(n <= 0) {
+            return 0;
+        }
         ArrayList<Integer> result = new ArrayList<Integer>();
-        // !!! initial result !!!
         result.add(0);
-        helper(n, result, 0, new int[n]);
+        int[] col = new int[n];
+        helper(n, result, 0, col);
         return result.get(0);
     }
     
-    void helper(int n, ArrayList<Integer> result, int row, int[] column) {
+    private void helper(int n, ArrayList<Integer> result, int row, int[] col) {
         if(row == n) {
-        // add count to the first element in result (we only use the first element) !!!
-            result.set(0,result.get(0)+1);
+            result.set(0, result.get(0) + 1);
             return;
         }
         for(int i = 0; i < n; i++) {
-            column[row] = i;
-            if(check(row, column)){
-                helper(n, result, row + 1, column);
-            }
+            // diff: no need to use two loops, we only need to try every position for col[row]
+                col[row] = i;
+                if(valid(row, col)) {
+                    helper(n, result, row + 1, col);
+                }
         }
     }
     
-    boolean check(int row, int[] column) {
+    private boolean valid(int row, int[] col) {
         for(int i = 0; i < row; i++) {
-            if(column[i] == column[row] || row - i == Math.abs(column[row] - column[i])) return false;
+            // !!! col[i] & col[row] !!!
+            if(col[i] == col[row] || row - i == Math.abs(col[row] - col[i])) {
+                return false;
+            }
         }
         return true;
     }
