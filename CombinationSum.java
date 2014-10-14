@@ -1,31 +1,54 @@
+/*
+Given a set of candidate numbers (C) and a target number (T), 
+find all unique combinations in C where the candidate numbers sums to T.
+
+The same repeated number may be chosen from C unlimited number of times.
+
+Note:
+All numbers (including target) will be positive integers.
+Elements in a combination (a1, a2, … , ak) must be in non-descending order. (ie, a1 ≤ a2 ≤ … ≤ ak).
+The solution set must not contain duplicate combinations.
+For example, given candidate set 2,3,6,7 and target 7, 
+A solution set is: 
+[7] 
+[2, 2, 3] 
+*/
+
+// NP: O(2^n), O(n) for the result
+
 public class Solution {
-    public ArrayList<ArrayList<Integer>> combinationSum(int[] candidates, int target) {
-        ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
-        if(candidates.length == 0 || candidates == null) return result;
-        // !!! don't forget to sort !!!
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        if(candidates == null || candidates.length == 0) {
+            return result;
+        }
         Arrays.sort(candidates);
-        ArrayList<Integer> set = new ArrayList<Integer>();
-        helper(result, set, candidates, target, 0, 0);
+        List<Integer> sum = new ArrayList<Integer>();
+        helper(candidates, target, result, sum, 0);
         return result;
     }
     
-    void helper(ArrayList<ArrayList<Integer>> result, ArrayList<Integer> set, int[] candidates, int target, int sum, int step){
-        if(sum == target){
-            if(!result.contains(set)){
-                // use new to keep elements in set
-                result.add(new ArrayList<Integer>(set));
-            }
+    private void helper(int[] candidates, int target, List<List<Integer>> result, List<Integer> sum, int start) {
+        /*
+        if(target < 0) {
             return;
-        }else if(sum > target){
+        }
+        */
+        if(target == 0) {
+            result.add(new ArrayList<Integer>(sum));
             return;
-        }else{
-            for(int i = step; i < candidates.length; i++){
-                set.add(candidates[i]);
-                // !!! step is i !!!
-                helper(result, set, candidates, target, sum + candidates[i], i);
-                // !!! remove last put element in set !!!
-                set.remove(set.size() - 1);
+        }
+        for(int i = start; i < candidates.length; i++) {
+            // !!! duplicated elements: ignore !!!
+            if(i > 0 && candidates[i] == candidates[i - 1]) {
+                continue;
             }
+            sum.add(candidates[i]);
+            // !!! actually, no need to add this check condition if you do the above check !!!
+            if(target - candidates[i] >= 0) {
+                helper(candidates, target - candidates[i], result, sum, i);
+            }
+            sum.remove(sum.size() - 1);
         }
     }
 }
