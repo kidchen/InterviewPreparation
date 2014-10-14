@@ -1,44 +1,76 @@
+/*
+The n-queens puzzle is the problem of placing n queens on an n×n chessboard such that no two queens attack each other.
+
+Given an integer n, return all distinct solutions to the n-queens puzzle.
+
+Each solution contains a distinct board configuration of the n-queens' placement, 
+where 'Q' and '.' both indicate a queen and an empty space respectively.
+
+For example,
+There exist two distinct solutions to the 4-queens puzzle:
+
+[
+ [".Q..",  // Solution 1
+  "...Q",
+  "Q...",
+  "..Q."],
+
+ ["..Q.",  // Solution 2
+  "Q...",
+  "...Q",
+  ".Q.."]
+]
+*/
+
+// NP, O(2^n)
+
 public class Solution {
-    public ArrayList<String[]> solveNQueens(int n) {
-        ArrayList<String[]> result = new ArrayList<String[]>();
-        helper(result, n, 0, new int[n]);
+    public List<String[]> solveNQueens(int n) {
+        List<String[]> result = new ArrayList<String[]>();
+        if(n <= 0) {
+            return result;
+        }
+        // !!! in col[i]: the ith row will set the Q in position col[i] !!!
+        int[] col = new int[n];
+        helper(n, result, 0, col);
         return result;
     }
     
-    void helper(ArrayList<String[]> result, int n, int row, int[] column) {
-        // all rows are filled
+    private void helper(int n, List<String[]> result, int row, int[] col) {
+        // if we finished filling the col[]
         if(row == n) {
-            // use a new item, because we should return String[] in ArrayList !!!
             String[] item = new String[n];
             for(int i = 0; i < n; i++) {
-                // new StringBuffer in each for loop !!!
-                StringBuffer sb = new StringBuffer();
+                StringBuffer eachRow = new StringBuffer();
                 for(int j = 0; j < n; j++) {
-                    if(column[i] == j) {
-                        sb.append("Q");
-                    }else{
-                        sb.append(".");
+                    if(col[j] == i) {
+                        eachRow.append('Q');
+                    } else {
+                        eachRow.append('.');
                     }
                 }
-                item[i] = sb.toString();
+                item[i] = eachRow.toString();
             }
             result.add(item);
             return;
         }
-        // fill each row in different columns
         for(int i = 0; i < n; i++) {
-            column[row] = i;
-            if(check(row, column)) {
-                helper(result, n, row + 1, column);
+            // !!! col[row] !!!
+            col[row] = i;
+            if(valid(row, col)) {
+                helper(n, result, row + 1, col);
             }
         }
     }
     
-    boolean check(int row, int[] column) {
+    private boolean valid(int row, int[] col) {
+        // check all rows that have been assigned Q
         for(int i = 0; i < row; i++) {
-            // check whether this column have been placed with a queen
-            // OR is there any queen in diagonal line --> check if the difference between rows and columns are the same
-            if(column[i] == column[row] || row - i == Math.abs(column[i] - column[row])) return false;
+            // if this position has been used(two Qs appears in the same col), OR
+            // two Qs appears in the same diagonal
+            if(col[i] == col[row] || row - i == Math.abs(col[row] - col[i])) {
+                return false;
+            }
         }
         return true;
     }
