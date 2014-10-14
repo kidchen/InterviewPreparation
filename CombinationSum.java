@@ -46,6 +46,7 @@ public class Solution {
             sum.add(candidates[i]);
             // !!! actually, no need to add this check condition if you do the above check !!!
             if(target - candidates[i] >= 0) {
+                // each element can be reused, so we only pass the current element (i) as new start
                 helper(candidates, target - candidates[i], result, sum, i);
             }
             sum.remove(sum.size() - 1);
