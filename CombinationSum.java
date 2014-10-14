@@ -39,8 +39,8 @@ public class Solution {
             return;
         }
         for(int i = start; i < candidates.length; i++) {
-            // !!! duplicated elements: ignore !!!
-            if(i > 0 && candidates[i] == candidates[i - 1]) {
+            // !!! duplicated elements: ignore. Pay attention to i>start, not i>0 !!!
+            if(i > start && candidates[i] == candidates[i - 1]) {
                 continue;
             }
             sum.add(candidates[i]);
