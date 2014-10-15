@@ -1,3 +1,68 @@
+/*
+Given a string containing only digits, restore it by returning all possible valid IP address combinations.
+
+For example:
+Given "25525511135",
+
+return ["255.255.11.135", "255.255.111.35"]. (Order does not matter)
+*/
+
+// Similar to NP, but only 4 layers of recursion
+
+public class Solution {
+    public List<String> restoreIpAddresses(String s) {
+        List<String> result = new ArrayList<String>();
+        if(s == null || s.length() == 0) {
+            return result;
+        }
+        // item: store each segment (4 total)
+        List<String> item = new ArrayList<String>();
+        helper(s, result, item, 0);
+        return result;
+    }
+    
+    private void helper(String s, List<String> result, List<String> item, int start) {
+        // if all 4 segments are created
+        if(item.size() == 4) {
+            if(start != s.length()) {
+                return;
+            }
+            StringBuffer sb = new StringBuffer();
+            for(int i = 0; i < 3; i++) {
+                sb.append(item.get(i));
+                sb.append('.');
+            }
+            sb.append(item.get(3));
+            result.add(sb.toString());
+            return;
+        }
+        // !!! start: the index that we begin segment. --> i from start to start+3 !!!
+        for(int i = start; i < s.length() && i < start + 3; i++) {
+            String sub = s.substring(start, i + 1);
+            if(valid(sub)) {
+                item.add(sub);
+                // start = i + 1, move on to next digit
+                helper(s, result, item, i + 1);
+                item.remove(item.size() - 1);
+            }
+        }
+    }
+    
+    private boolean valid(String s) {
+        // !!! don't forget to check '0'/'000' !!!
+        if(s.charAt(0) == '0' && s.length() > 1) {
+            return false;
+        }
+        int num = Integer.parseInt(s);
+        return num >= 0 && num <= 255;
+    }
+}
+
+
+
+/******** OLD VERSION *********/
+
+
 public class Solution {
     public ArrayList<String> restoreIpAddresses(String s) {
         ArrayList<String> result = new ArrayList<String>();
