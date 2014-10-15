@@ -1,56 +1,72 @@
+/*
+Write a program to solve a Sudoku puzzle by filling the empty cells.
+
+Empty cells are indicated by the character '.'.
+
+You may assume that there will be only one unique solution.
+*/
+
+// O(9^4), O(1) space
+
 public class Solution {
     public void solveSudoku(char[][] board) {
+        if(board == null || board.length == 0 || board[0].length == 0) {
+            return;
+        }
         helper(board, 0, 0);
+        return;
     }
     
-    // i: row, j: col
-    boolean helper(char[][] board, int i, int j) {
-        // firstly fill each row
-        // if we finish this row, fill the next row
-        if(j >= 9) {
-            // !!! each time use helper, we need to use return !!!
-            // !!! set j back to 0 !!!
-            return helper(board, i + 1, 0);
+    // !!! in order to do recursion in this case, we have to use boolean return type !!!
+    private boolean helper(char[][] board, int row, int col) {
+        // if this is the end of a row
+        if(col == 9) {
+            return helper(board, row + 1, 0);
         }
-        // if the last row is finished, return
-        if(i == 9) {
+        // if this is the end of the board, return true (we successfully go there)
+        if(row == 9) {
             return true;
         }
-        // finish each row:
-        // find a blank:
-        if(board[i][j] == '.') {
-            // try each number
-            for(int k = 1; k <= 9; k++) {
-                board[i][j] = (char)(k + '0');
-                // valid
-                if(isValid(board, i, j)) {
-                    // !!! j is finished, try j + 1 in if clause !!!
-                    if(helper(board, i, j + 1)) return true;
+        // if this is an empty position, fill in numbers from 1 to 9
+        if(board[row][col] == '.') {
+            for(int i = 1; i <= 9; i++) {
+                board[row][col] = (char)(i + '0');
+                if(valid(board, row, col)) {
+                    // if this number is valid, 
+                    // THEN check its next, here we go deep
+                    //      --> until the end, return true, OR can't go to the end, return false in if clause
+                    if(helper(board, row, col + 1)){
+                        return true;
+                    }
                 }
-                // not valid
-                board[i][j] = '.';
+                // if go deep, then we can't reach here, if we can't go deep, that means current number is wrong
+                // here we have to add this line, because for outer recursion usage
+                board[row][col] = '.';
             }
         } else {
-            // not a blank
-            return helper(board, i, j + 1);
+            // if this is not an empty position, go to the next one
+            return helper(board, row, col + 1);
         }
         return false;
     }
     
-    // check whether this number is valid in this position
-    boolean isValid(char[][] board, int i, int j) {
-        // check row:
-        for(int k = 0; k < 9; k++) {
-            if(k != j && board[i][j] == board[i][k]) return false;
+    private boolean valid(char[][] board, int row, int col) {
+        // have to check all numbers in a row/col except THIS one
+        for(int i = 0; i < 9; i++) {
+            if(i != col && board[row][i] == board[row][col]) {
+                return false;
+            }
         }
-        // check col:
-        for(int k = 0; k < 9; k++) {
-            if(k != i && board[i][j] == board[k][j]) return false;
+        for(int i = 0; i < 9; i++) {
+            if(i != row && board[i][col] == board[row][col]) {
+                return false;
+            }
         }
-        // check block:
-        for(int col = j/3*3; col < j/3*3 + 3; col++) {
-            for(int row = i/3*3; row < i/3*3 +3; row++) {
-                if(col != j && row != i && board[row][col] == board[i][j]) return false;
+        for(int i = row/3*3; i < 3 + row/3*3; i++) {
+            for(int j = col/3*3; j < 3 + col/3*3; j++) {
+                if(i != row && j != col && board[i][j] == board[row][col]) {
+                    return false;
+                }
             }
         }
         return true;
