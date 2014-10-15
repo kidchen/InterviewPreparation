@@ -1,3 +1,10 @@
+/*
+Sort a linked list using insertion sort.
+*/
+
+// O(n^2), O(1) space
+// reference: http://en.wikipedia.org/wiki/Insertion_sort
+
 /**
  * Definition for singly-linked list.
  * public class ListNode {
@@ -11,27 +18,26 @@
  */
 public class Solution {
     public ListNode insertionSortList(ListNode head) {
-        if(head == null || head.next == null) return head;
-        // pre -> 1 (3 temp) (4 cur) (2 smaller) 5 ==> 1 2 3 4 5
+        if(head == null || head.next == null) {
+            return head;
+        }
         ListNode dummy = new ListNode(0);
         dummy.next = head;
+        ListNode pre = dummy;
         ListNode cur = head;
+        // !!! don't forget to add cur.next != null !!!
         while(cur != null && cur.next != null) {
-            // find smaller node(cur.next)
-            if(cur.val > cur.next.val) {
-                ListNode smaller = cur.next;
-                // new pre to do the while loop
-                ListNode pre = dummy;
-                // find position for smaller node
-                while(pre.next.val < smaller.val) {
+            if(cur.next.val < cur.val) {
+                ListNode small = cur.next;
+                cur.next = cur.next.next;
+                while(pre.next.val < small.val) {
                     pre = pre.next;
                 }
                 ListNode temp = pre.next;
-                pre.next = smaller;
-                cur.next = smaller.next;
-                smaller.next = temp;
+                pre.next = small;
+                small.next = temp;
+                pre = dummy;
             } else {
-                // !!! have to use "else" !!!
                 cur = cur.next;
             }
         }
@@ -41,7 +47,7 @@ public class Solution {
 
 
 
-/************UPDATE AUG 17*************/
+/************OLD VERSION - AUG 17*************/
 
 /**
  * Definition for singly-linked list.
