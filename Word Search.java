@@ -1,7 +1,8 @@
 /*
 Given a 2D board and a word, find if the word exists in the grid.
 
-The word can be constructed from letters of sequentially adjacent cell, where "adjacent" cells are those horizontally or vertically neighboring. The same letter cell may not be used more than once.
+The word can be constructed from letters of sequentially adjacent cell, 
+where "adjacent" cells are those horizontally or vertically neighboring. The same letter cell may not be used more than once.
 
 For example,
 Given board =
@@ -43,12 +44,14 @@ public class Solution {
         if(index == word.length()) {
             return true;
         }
-        if(row < 0 || col < 0 || row >= board.length || col >= board[0].length || board[row][col] == 'x' || board[row][col] != word.charAt(index)) {
+        if(row < 0 || col < 0 || row >= board.length || col >= board[0].length 
+            || board[row][col] == 'x' || board[row][col] != word.charAt(index)) {
             return false;
         }
         board[row][col] = 'x';
         // if we can use the same char many times, we need add helper(board, word, row, col, index+1)
-        boolean result = helper(board, word, row + 1, col, index + 1) || helper(board, word, row - 1, col, index + 1) || helper(board, word, row, col + 1, index + 1) || helper(board, word, row, col - 1, index + 1);
+        boolean result = helper(board, word, row + 1, col, index + 1) || helper(board, word, row - 1, col, index + 1) 
+                            || helper(board, word, row, col + 1, index + 1) || helper(board, word, row, col - 1, index + 1);
         board[row][col] = word.charAt(index);
         return result;
     }
