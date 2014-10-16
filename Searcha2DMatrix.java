@@ -15,21 +15,44 @@ Consider the following matrix:
 Given target = 3, return true.
 */
 
+// O(logm) + O(logn), O(1) space
+
 public class Solution {
     public boolean searchMatrix(int[][] matrix, int target) {
-        if(matrix==null || matrix.length==0 || matrix[0].length==0) return false;
-        int start = 0, end = matrix.length*matrix[0].length-1;
-        while(start<=end){
-            int mid = (start+end)/2;
-            int midx = mid/matrix[0].length;
-            int midy = mid%matrix[0].length;
-            if(matrix[midx][midy]==target) return true;
-            if(matrix[midx][midy]<target) start=mid+1;
-            if(matrix[midx][midy]>target) end=mid-1;
+        if(matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return false;
+        }
+        // first, find row:
+        int top = 0;
+        int bottom = matrix.length - 1;
+        int row = 0;
+        while(top <= bottom) {
+            row = (top + bottom) / 2;
+            if(target >= matrix[row][0] && target <= matrix[row][matrix[0].length - 1]) {
+                break;
+            } else if(target < matrix[row][0]) {
+                bottom = row - 1;
+            } else {
+                top = row + 1;
+            }
+        }
+        // find the val:
+        int start = 0;
+        int end = matrix[0].length - 1;
+        while(start <= end) {
+            int mid = (start + end) / 2;
+            if(target == matrix[row][mid]) {
+                return true;
+            } else if(target < matrix[row][mid]) {
+                end = mid - 1;
+            } else {
+                start = mid + 1;
+            }
         }
         return false;
     }
 }
+
 
 /****************UPDATE AUG 24*****************/
 
@@ -71,3 +94,23 @@ public class Solution {
         return false;
     }
 }
+
+
+/********** OLD VERSION **********/
+
+public class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        if(matrix==null || matrix.length==0 || matrix[0].length==0) return false;
+        int start = 0, end = matrix.length*matrix[0].length-1;
+        while(start<=end){
+            int mid = (start+end)/2;
+            int midx = mid/matrix[0].length;
+            int midy = mid%matrix[0].length;
+            if(matrix[midx][midy]==target) return true;
+            if(matrix[midx][midy]<target) start=mid+1;
+            if(matrix[midx][midy]>target) end=mid-1;
+        }
+        return false;
+    }
+}
+
