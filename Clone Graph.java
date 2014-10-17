@@ -1,5 +1,5 @@
-// solution 1 : BFT
-// use LinkedList to create a queue
+// solution 1 : BFS
+// use LinkedList to create a queue. O(n), O(n) space for the queue, hashmap and new nodes.
 
 
 /**
@@ -12,36 +12,33 @@
  */
 public class Solution {
     public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
-        // BFS
-        if(node == null) return null;
-        HashMap<UndirectedGraphNode,UndirectedGraphNode> map = new HashMap<UndirectedGraphNode,UndirectedGraphNode>();
-        UndirectedGraphNode copy = new UndirectedGraphNode(node.label);
-        map.put(node, copy);
+        if(node == null) {
+            return null;
+        }
         LinkedList<UndirectedGraphNode> queue = new LinkedList<UndirectedGraphNode>();
-        queue.add(node);
+        HashMap<UndirectedGraphNode, UndirectedGraphNode> map = new HashMap<UndirectedGraphNode, UndirectedGraphNode>();
+        queue.offer(node);
+        map.put(node, new UndirectedGraphNode(node.label));
         while(!queue.isEmpty()) {
             UndirectedGraphNode cur = queue.poll();
             for(int i = 0; i < cur.neighbors.size(); i++) {
-                // if the node is not created yet, create it
+                // !!! if node not in map, add a new node into the map !!!
                 if(!map.containsKey(cur.neighbors.get(i))) {
-                    UndirectedGraphNode newCopy = new UndirectedGraphNode(cur.neighbors.get(i).label);
-                    map.put(cur.neighbors.get(i), newCopy);
-                    queue.add(cur.neighbors.get(i));
+                    map.put(cur.neighbors.get(i), new UndirectedGraphNode(cur.neighbors.get(i).label));
+                    queue.offer(cur.neighbors.get(i));
                 }
-                // if node exist, just add this neighbor to the node's neighbor list
-                // !!! this line will be executed anyway !!!
-                // !!! Add map.get(), not just cur.neighbors.get(i) !!!
+                // now we are sure that the node is existed, add the neighbors to the value
                 map.get(cur).neighbors.add(map.get(cur.neighbors.get(i)));
             }
         }
-        return copy;
+        return map.get(node);
     }
 }
 
 
 
-// solution 2 : DFT
-// use linkedList to create a stack
+// solution 2 : DFS
+// use linkedList to create a stack(this is the only diff between BFS & DFS by iteration), O(n), O(n) space
 
 
 /**
@@ -74,6 +71,41 @@ public class Solution {
             }
         }
         return copy;
+    }
+}
+
+
+// solution 3: DFS - recursion
+// O(n), O(n) space cost
+
+/**
+ * Definition for undirected graph.
+ * class UndirectedGraphNode {
+ *     int label;
+ *     List<UndirectedGraphNode> neighbors;
+ *     UndirectedGraphNode(int x) { label = x; neighbors = new ArrayList<UndirectedGraphNode>(); }
+ * };
+ */
+public class Solution {
+    public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
+        if(node == null) {
+            return null;
+        }
+        HashMap<UndirectedGraphNode, UndirectedGraphNode> map = new HashMap<UndirectedGraphNode, UndirectedGraphNode>();
+        map.put(node, new UndirectedGraphNode(node.label));
+        helper(node, map);
+        return map.get(node);
+    }
+    
+    private void helper(UndirectedGraphNode node, HashMap<UndirectedGraphNode, UndirectedGraphNode> map) {
+        for(int i = 0; i < node.neighbors.size(); i++) {
+            UndirectedGraphNode cur = node.neighbors.get(i);
+            if(!map.containsKey(cur)) {
+                map.put(cur, new UndirectedGraphNode(cur.label));
+                helper(cur, map);
+            }
+            map.get(node).neighbors.add(map.get(cur));
+        }
     }
 }
 
