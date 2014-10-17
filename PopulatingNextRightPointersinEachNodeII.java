@@ -21,6 +21,9 @@ After calling your function, the tree should look like:
     4-> 5 -> 7 -> NULL
 */
 
+// no need to add null at the end of each row!!!
+// O(n), O(1)
+
 /**
  * Definition for binary tree with next pointer.
  * public class TreeLinkNode {
@@ -31,48 +34,40 @@ After calling your function, the tree should look like:
  */
 public class Solution {
     public void connect(TreeLinkNode root) {
-        if(root == null) return;
-        // current: cur node
-        // head: the first node in a level
-        // end: keep moving in each level and connecting two nodes
-        TreeLinkNode current = root, head = null, end = null;
-        while(current != null) {
-            if(current.left != null) {
-                if(head != null) {
-                // connect two node by end
-                    end.next = current.left;
-                    end = end.next;
+        if(root == null) {
+            return;
+        }
+        TreeLinkNode cur = null;
+        TreeLinkNode first = null;
+        TreeLinkNode last = root;
+        // !!! when last != null !!!
+        while(last != null) {
+            if(last.left != null) {
+                if(cur == null) {
+                    cur = last.left;
+                    // !!! first is on the beginning of the cur level !!!
+                    first = last.left;
                 } else {
-                // put head&end into the next level
-                    head = current.left;
-                    end = head;
+                    cur.next = last.left;
+                    cur = cur.next;
                 }
             }
-            
-            if(current.right != null) {
-                if(head != null) {
-                // connect two node by end
-                    end.next = current.right;
-                    end = end.next;
+            if(last.right != null) {
+                if(cur == null) {
+                    cur = last.right;
+                    first = last.right;
                 } else {
-                // put head&end into the next level
-                    head = current.right;
-                    end = head;
+                    cur.next = last.right;
+                    cur = cur.next;
                 }
             }
-            
-            // after checking left&right, move current to its next
-            current = current.next;
-            // if there is no node in this level, reset and move cur into the next level
-            if(current == null) {
-                current = head;
-                head = null;
-                end = null;
+            if(last.next == null) {
+                last = first;
+                first = null;
+                cur = null;
+            } else {
+                last = last.next;
             }
         }
     }
 }
-
-
-// no need to add null at the end of each row!!!
-// O(n), O(1)
