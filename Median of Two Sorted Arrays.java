@@ -2,13 +2,50 @@
  * Find the median of the two sorted arrays. The overall run time complexity should be O(log (m+n)).
  */
 
+public class Solution {
+    public double findMedianSortedArrays(int A[], int B[]) {
+        int len = A.length + B.length;
+        if((A.length + B.length) % 2 == 1) {
+            return helper(A, B, 0, 0, len / 2 + 1);
+        } else {
+            return (helper(A, B, 0, 0, len / 2) + helper(A, B, 0, 0, len / 2 + 1) ) / 2.0;
+        }
+    }
+    
+    // !!! k is not the index, but the kth top number !!!
+    private int helper(int[] A, int[] B, int astart, int bstart, int k) {
+        // if not in A/B (need to add =, since if A is empty..)
+        if(astart >= A.length) {
+            return B[bstart + k - 1];
+        }
+        if(bstart >= B.length) {
+            return A[astart + k - 1];
+        }
+        if(k == 1) {
+            return Math.min(A[astart], B[bstart]);
+        }
+        // check validation of the index:
+        int ak = astart + k/2 - 1 < A.length ? A[astart + k/2 - 1] : Integer.MAX_VALUE;
+        int bk = bstart + k/2 - 1 < B.length ? B[bstart + k/2 - 1] : Integer.MAX_VALUE;
+        // !!! k-k/2, eg: k=3, odd number !!!
+        if(ak < bk) {
+            return helper(A, B, astart + k/2, bstart, k - k/2);
+        } else {
+            return helper(A, B, astart, bstart + k/2, k - k/2);
+        }
+    }
+}
+
+
+/****** OLD VERSION ******/
 
 public class Solution {
     public double findMedianSortedArrays(int A[], int B[]) {
         if((A.length + B.length) % 2 == 1) {
             return helper(A, B, 0, A.length - 1, 0, B.length - 1, (A.length + B.length) / 2 + 1);
         } else {
-            return (helper(A, B, 0, A.length - 1, 0, B.length - 1, (A.length + B.length) / 2) + helper(A, B, 0, A.length - 1, 0, B.length - 1, (A.length + B.length) / 2 + 1) ) / 2.0;
+            return (helper(A, B, 0, A.length - 1, 0, B.length - 1, (A.length + B.length) / 2) 
+                    + helper(A, B, 0, A.length - 1, 0, B.length - 1, (A.length + B.length) / 2 + 1) ) / 2.0;
         }
     }
     
