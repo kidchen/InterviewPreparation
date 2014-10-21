@@ -9,6 +9,7 @@ You may assume no duplicate exists in the array!!!!!!
 */
 
 // O(logn), O(1) space
+// worst case: O(n), since we need to deal with left++ operation
 
 public class Solution {
     public int findMin(int[] num) {
