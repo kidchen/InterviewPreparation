@@ -9,20 +9,20 @@ Given input array A = [1,1,2],
 Your function should return length = 2, and A is now [1,2].
 */
 
+// O(n) time, O(1) space
+
 public class Solution {
     public int removeDuplicates(int[] A) {
-        if(A == null || A.length < 2){
+        if(A == null || A.length < 2) {
             return A.length;
         }
-        // index is the new length
-        int index = 1;
+        int index = 0;
         for(int i = 1; i < A.length; i++) {
-            if(A[i] != A[i - 1]) {
-                // set the current value to index
-                A[index] = A[i];
+            if(A[index] != A[i]) {
                 index++;
+                A[index] = A[i];
             }
         }
-        return index;
+        return index + 1;
     }
 }
