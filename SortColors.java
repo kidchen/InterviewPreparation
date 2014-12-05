@@ -64,6 +64,7 @@ public class Solution {
         int blue = A.length - 1;
         int i = 0;
         // !!! while is better than for to write, also PAY ATTENTION to i <= blue, rather than < A.length !!!
+        // !!! equal: [1,0], if no "=", then the output would be [1,0] rather than [0,1] !!!
         while(i <= blue) {
             // !!! have to also check i>red / i<blue, to let the i move on !!!
             if(A[i] == 0 && i > red) {
