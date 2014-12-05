@@ -8,6 +8,39 @@ Given sorted array A = [1,1,1,2,2,3],
 Your function should return length = 5, and A is now [1,1,2,2,3].
 */
 
+/***** UPDATE Dec 5 *****/
+
+public class Solution {
+    public int removeDuplicates(int[] A) {
+        if(A == null || A.length == 0) {
+            return 0;
+        }
+        int len = 0;
+        boolean twice = false;
+        for(int i = 1; i < A.length; i++) {
+            if(A[i] != A[len]) {
+                len++;
+                A[len] = A[i];
+                twice = false;
+            } else {
+                if(!twice) {
+                    len++;
+                    A[len] = A[i];
+                    twice = true;
+                }
+            }
+        }
+        return len + 1;
+    }
+}
+
+
+// different between I and II is the initial pointer (0,1)-->(1,2)
+// because we need to check whether current pointer is the same with the former one and
+// the one before the former one (whether 2 is the same with 1 and 0?)
+
+// O(n) time, O(1) space
+
 public class Solution {
     public int removeDuplicates(int[] A) {
         int n = A.length;
@@ -32,8 +65,3 @@ public class Solution {
         return i + 1;
     }
 }
-
-
-// different between I and II is the initial pointer (0,1)-->(1,2)
-// because we need to check whether current pointer is the same with the former one and
-// the one before the former one (whether 2 is the same with 1 and 0?)
