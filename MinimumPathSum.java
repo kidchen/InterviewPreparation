@@ -1,9 +1,11 @@
 /*
-Given a m x n grid filled with non-negative numbers, find a path from top left to bottom right which minimizes the sum of all numbers along its path.
+Given a m x n grid filled with non-negative numbers, 
+find a path from top left to bottom right which minimizes the sum of all numbers along its path.
 
 Note: You can only move either down or right at any point in time.
 */
 
+// Use a 1D array to store the results (for a row/col), first initial the result[], then update the elements
 // O(m*n), O(m) space cost --> only use a 1D array (one row length)
 
 public class Solution {
@@ -14,7 +16,7 @@ public class Solution {
         int[] result = new int[grid[0].length];
         result[0] = grid[0][0];
         for(int i = 1; i < grid[0].length; i++) {
-            // !!! result[i-1] !!!
+            // !!! initial the result[] !!!
             result[i] = result[i - 1] + grid[0][i];
         }
         for(int i = 1; i < grid.length; i++) {
