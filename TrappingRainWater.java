@@ -1,5 +1,6 @@
 /*
-Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it is able to trap after raining.
+Given n non-negative integers representing an elevation map where the width of each bar is 1, 
+compute how much water it is able to trap after raining.
 
 For example, 
 Given [0,1,0,2,1,0,1,3,2,1,2,1], return 6.
@@ -30,8 +31,8 @@ public class Solution {
 
 
 // O(2n) = O(n), O(n) space
-// first pass, find max left and store it in an array
-// second pass, find the height of each position and calculate the result
+// first pass (left to right), find max left and store it in an array
+// second pass (right to left), find the height of each position and calculate the result
 
 public class Solution {
     public int trap(int[] A) {
@@ -41,6 +42,7 @@ public class Solution {
         int[] left = new int[A.length];
         int max = 0;
         for(int i = 0; i < A.length; i++) {
+            // first, assign the left[], then re-value the max
             left[i] = max;
             max = Math.max(A[i], max);
         }
@@ -48,7 +50,7 @@ public class Solution {
         // !!! max already defined, don't use "int" again !!!
         max = 0;
         for(int i = A.length - 1; i >= 0; i--) {
-            // find height for each position
+            // !!! find height for each position !!!
             left[i] = Math.min(max, left[i]);
             max = Math.max(A[i], max);
             // if (left[i] - A[i]) is negative, do nothing (add 0)
@@ -61,8 +63,9 @@ public class Solution {
 }
 
 
-// O(n), O(1) space with only one pass
-// keep two indices at two sides, moving forward from the smaller side and add (height - A[cur]) to result as long as its positive
+// O(n), O(1) space with only *one pass*
+// keep two indices at two sides, 
+// moving forward from the smaller side and add (height - A[cur]) to result as long as its positive
 // after finding its negative, redo the comparision on both side and moving again from the smaller side
 
 public class Solution {
