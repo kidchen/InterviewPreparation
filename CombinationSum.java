@@ -15,41 +15,36 @@ A solution set is:
 */
 
 // NP: O(2^n), O(n) for the result
+// modify the target value to push it near 0
 
 public class Solution {
-    public List<List<Integer>> combinationSum(int[] candidates, int target) {
-        List<List<Integer>> result = new ArrayList<List<Integer>>();
+    public ArrayList<ArrayList<Integer>> combinationSum(int[] candidates, int target) {
+        ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
         if(candidates == null || candidates.length == 0) {
             return result;
         }
+        // don't forget to sort
         Arrays.sort(candidates);
-        List<Integer> sum = new ArrayList<Integer>();
-        helper(candidates, target, result, sum, 0);
+        ArrayList<Integer> item = new ArrayList<Integer>();
+        helper(candidates, target, result, item, 0);
         return result;
     }
     
-    private void helper(int[] candidates, int target, List<List<Integer>> result, List<Integer> sum, int start) {
-        /*
-        if(target < 0) {
-            return;
-        }
-        */
+    private void helper(int[] candidates, int target, ArrayList<ArrayList<Integer>> result, ArrayList<Integer> item, int start) {
         if(target == 0) {
-            result.add(new ArrayList<Integer>(sum));
+            result.add(new ArrayList<Integer>(item));
             return;
         }
         for(int i = start; i < candidates.length; i++) {
-            // !!! duplicated elements: ignore. Pay attention to i>start, not i>0 !!!
+            // deall with duplicates
             if(i > start && candidates[i] == candidates[i - 1]) {
                 continue;
             }
-            sum.add(candidates[i]);
-            // !!! actually, no need to add this check condition if you do the above check !!!
             if(target - candidates[i] >= 0) {
-                // each element can be reused, so we only pass the current element (i) as new start
-                helper(candidates, target - candidates[i], result, sum, i);
+                item.add(candidates[i]);
+                helper(candidates, target - candidates[i], result, item, i);
+                item.remove(item.size() - 1);
             }
-            sum.remove(sum.size() - 1);
         }
     }
 }
