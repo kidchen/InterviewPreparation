@@ -17,6 +17,8 @@ If S = [1,2,2], a solution is:
 ]
 */
 
+// O(2^n) time/space
+
 public class Solution {
     public ArrayList<ArrayList<Integer>> subsetsWithDup(int[] num) {
         ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
@@ -31,7 +33,7 @@ public class Solution {
         // !!! have to use new ArrayList, because subset will be changed later !!!
         result.add(new ArrayList<Integer>(subset));
         for(int i=len; i<num.length; i++){
-            // skip duplicates
+            // only diff: skip duplicates
             if(i!=len && num[i]==num[i-1]){
                 continue;
             }
@@ -39,5 +41,38 @@ public class Solution {
             helper(num,result,subset,i+1);
             subset.remove(subset.size()-1);
         }
+    }
+}
+
+
+// No recursion method:
+
+public class Solution {
+    public ArrayList<ArrayList<Integer>> subsetsWithDup(int[] num) {
+        ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
+        result.add(new ArrayList<Integer>());
+        if(num == null || num.length == 0) {
+            return result;
+        }
+        // don't forget to sort, and initial the start as 0
+        Arrays.sort(num);
+        int start = 0;
+        for(int i = 0; i < num.length; i++) {
+            int size = result.size();
+            // start: when meet dup, we only add second half of the current elements in the result
+            for(int j = start; j < size; j++) {
+                ArrayList<Integer> item = new ArrayList<Integer>(result.get(j));
+                item.add(num[i]);
+                result.add(item);
+            }
+            if(i < num.length - 1 && num[i] == num[i + 1]) {
+                // !!! when meet dup, start from current size !!!
+                start = size;
+            } else {
+                // don't forget to re-set 0 if no dup
+                start = 0;
+            }
+        }
+        return result;
     }
 }
