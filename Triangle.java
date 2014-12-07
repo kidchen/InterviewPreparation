@@ -18,25 +18,22 @@ Bonus point if you are able to do this using only O(n) extra space, where n is t
 
 public class Solution {
     public int minimumTotal(List<List<Integer>> triangle) {
-        if (triangle.size() == 0) {
+        if(triangle.size() == 0) {
             return 0;
         }
-        // !!! don't forget add 1 !!!
-        int num[] = new int[triangle.size() + 1];
-        // from bottom to up
-        for (int row = triangle.size() - 1; row >= 0; row--) {
-            List<Integer> level = triangle.get(row);
-            // !!! do the for loop including col = row
-            for (int col = 0; col <= row; col++) {
-                num[col] = Math.min(level.get(col) + num[col], level.get(col) + num[col + 1]);
+        // need 1 extra space for comparing the min
+        int[] result = new int[triangle.size() + 1];
+        // from the last row to the top
+        for(int row = triangle.size() - 1; row >= 0; row--) {
+        	// !!! traverse current row --> need to add "=" (row.length = row + 1, since row can be 0) !!!
+            for(int col = 0; col <= row; col++) {
+            	// find the min of the next row and add current element, then put into result
+                result[col] = Math.min(result[col], result[col + 1]) + triangle.get(row).get(col);
             }
         }
-        return num[0];
+        return result[0];
     }
 }
-
-
-
 
 
 
