@@ -18,6 +18,8 @@ public class Solution {
         if(A == null || A.length == 0) {
             return result;
         }
+        // !!! Binary Search Tip: if mid=target, move end, so that *start* will be in the first target !!!
+        // find left edge (when mid = target, move *end*, so that *start* will be like: [end, start(left-most one)])
         int start = 0;
         int end = A.length - 1;
         while(start <= end) {
@@ -28,7 +30,7 @@ public class Solution {
                 start = mid + 1;
             }
         }
-        // !!! Binary Search Tip: if mid=target, move end, so that *start* will be in the first target !!!
+        // find right edge (when mid = target, move *start*, so that *end* will be like: [end(right-most one), start])
         int left = start;
         start = 0;
         end = A.length - 1;
