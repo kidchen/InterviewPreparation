@@ -11,6 +11,30 @@ A = [2,3,1,1,4], return true.
 A = [3,2,1,0,4], return false.
 */
 
+
+// DP(local&global): O(n) & O(1)
+
+public class Solution {
+    public boolean canJump(int[] A) {
+        if(A.length == 0 || A == null) {
+            return false;
+        }
+        int reach = 0;
+        // !!! reach >= i, this means that if local can not reach to the next, break !!!
+        for(int i = 0; i < A.length && reach >= i; i++) {
+            reach = Math.max(reach, A[i] + i);
+        }
+        // don't forget -1
+        if(reach < A.length - 1) {
+            return false;
+        }
+        return true;
+    }
+}
+
+
+// normal greedy: O(n), O(n)
+
 public class Solution {
     public boolean canJump(int[] A) {
     // maxpath: record furthest distance from current position 
@@ -23,25 +47,6 @@ public class Solution {
             if(maxpath[i]<=i && i!= A.length-1){
                 return false;
             }
-        }
-        return true;
-    }
-}
-
-// Simple solution with DP(local&global), O(n) & O(1)
-
-public class Solution {
-    public boolean canJump(int[] A) {
-        if(A.length == 0 || A == null) {
-            return false;
-        }
-        int reach = 0;
-        // !!! reach >= i, this means that if local can not reach to the next, break !!!
-        for(int i = 0; i < A.length && reach >= i; i++) {
-            reach = Math.max(reach, A[i] + i);
-        }
-        if(reach < A.length - 1) {
-            return false;
         }
         return true;
     }
