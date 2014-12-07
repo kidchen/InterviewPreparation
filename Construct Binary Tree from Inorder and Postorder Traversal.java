@@ -1,3 +1,12 @@
+/*
+Given inorder and postorder traversal of a tree, construct the binary tree.
+
+Note:
+You may assume that duplicates do not exist in the tree.
+*/
+
+// O(nlogn) ? , O(1)
+
 /**
  * Definition for binary tree
  * public class TreeNode {
@@ -9,28 +18,30 @@
  */
 public class Solution {
     public TreeNode buildTree(int[] inorder, int[] postorder) {
-        int inEnd = inorder.length - 1;
-        int postEnd = postorder.length - 1;
-        return buildTree(inorder, postorder, 0, inEnd, 0, postEnd);
+        if(inorder == null || postorder == null) {
+            return null;
+        }
+        return helper(inorder, postorder, 0, inorder.length - 1, 0, postorder.length - 1);
     }
     
-    TreeNode buildTree(int[] inorder, int[] postorder, int inStart, int inEnd, int postStart, int postEnd) {
-        if(inStart > inEnd || postStart > postEnd) return null;
-        // find root
-        int rootVal = postorder[postEnd];
-        TreeNode root = new TreeNode(rootVal);
-        // find left & right
-        int devide = 0;
-        for(devide = 0; devide < inorder.length; devide++) {
-            if(inorder[devide] == rootVal) {
+    private TreeNode helper(int[] inorder, int[] postorder, int inStart, int inEnd, int postStart, int postEnd) {
+        if(inStart > inEnd || postStart > postEnd) {
+            return null;
+        }
+        TreeNode root = new TreeNode(postorder[postEnd]);
+        int divide;
+        for(divide = 0; divide <= inEnd; divide++) {
+            if(inorder[divide] == root.val) {
                 break;
             }
         }
-        // DFS
-        // ATTENTION: have to add (postStart - inStart) in left(postEnd) and right(postStart)
-        // there is no need to add anything on inorder, because devide is created in inorder.
-        root.left = buildTree(inorder, postorder, inStart, devide - 1, postStart, postStart - inStart + devide - 1);
-        root.right = buildTree(inorder, postorder, devide + 1, inEnd, postStart - inStart + devide, postEnd - 1);
+        /*
+        !!! when dealing with postOrder, pay attention:
+            left: postEnd = postStart + (divide - inStart - 1) --> (the length of the left subtree)
+            right: postStart = postStart + (divide - inStart) --> (the length of the right subtree include the root node)
+        */
+        root.left = helper(inorder, postorder, inStart, divide - 1, postStart, postStart + divide - inStart - 1);
+        root.right = helper(inorder, postorder, divide + 1, inEnd, postStart + divide - inStart, postEnd - 1);
         return root;
     }
 }
