@@ -43,25 +43,43 @@ private void helper(TreeNode root, ArrayList<Integer> result) {
 // Iteration
 // O(n) time, O(log n) space
 
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
 public class Solution {
+    /**
+     * @param root: The root of binary tree.
+     * @return: Preorder in ArrayList which contains node values.
+     */
     public ArrayList<Integer> preorderTraversal(TreeNode root) {
+        // write your code here
         ArrayList<Integer> result = new ArrayList<Integer>();
-        if (root == null) return result;
+        if(root == null) {
+            return result;
+        }
         LinkedList<TreeNode> stack = new LinkedList<TreeNode>();
-        while(root != null || !stack.isEmpty()){
+        while(!stack.isEmpty() || root != null) {
             if(root != null) {
                 stack.push(root);
                 result.add(root.val);
                 root = root.left;
             } else {
-            // if the node doesn't have left, return to its root node and go to its right
                 root = stack.pop();
                 root = root.right;
             }
         }
-        return preorder;
+        return result;
     }
 }
+
 
 // Morris Traversal
 // O(n) time, O(1) space
@@ -71,26 +89,21 @@ public ArrayList<Integer> preorderTraversal(TreeNode root) {
     ArrayList<Integer> res = new ArrayList<Integer>();
     TreeNode cur = root;
     TreeNode pre = null;
-    while(cur != null)
-    {
-        if(cur.left == null)
-        {
+    while(cur != null) {
+        if(cur.left == null) {
             res.add(cur.val);
             cur = cur.right;
         }
-        else
-        {
+        else {
             pre = cur.left;
             while(pre.right!=null && pre.right!=cur)
                 pre = pre.right;
-            if(pre.right==null)
-            {
+            if(pre.right==null) {
                 res.add(cur.val);
                 pre.right = cur;
                 cur = cur.left;
             }
-            else
-            {
+            else {
                 pre.right = null;
                 cur = cur.right;
             }
