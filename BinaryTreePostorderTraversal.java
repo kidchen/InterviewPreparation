@@ -41,7 +41,59 @@ public class Solution {
     }
 }
 
-// iteration (without modifying the input data):
+// iteration:
+
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+public class Solution {
+    /**
+     * @param root: The root of binary tree.
+     * @return: Postorder in ArrayList which contains node values.
+     */
+    public ArrayList<Integer> postorderTraversal(TreeNode root) {
+        // write your code here
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        if(root == null) {
+            return result;
+        }
+        LinkedList<TreeNode> stack = new LinkedList<TreeNode>();
+        // need an extra pre node to store the previous node we visited
+        TreeNode pre = null;
+        while(root != null || !stack.isEmpty()) {
+            if(root != null) {
+                stack.push(root);
+                root = root.left;
+            } else {
+                // if root == null:
+                // peek the top of the stack
+                TreeNode peek = stack.peek();
+                // if the peek has right child AND it is not the previous one
+                if(peek.right != null && pre != peek.right) {
+                    // continue visit the right child
+                    root = peek.right;
+                } else {
+                    // otherwise, record the peek to the result
+                    result.add(peek.val);
+                    // update the peek and pop the peek out
+                    pre = peek;
+                    stack.pop();
+                }
+            }
+        }
+        return result;
+    }
+}
+
+// Another thought (more complicated)
 
 /**
  * Definition for binary tree
