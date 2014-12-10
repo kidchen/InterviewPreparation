@@ -8,26 +8,63 @@ The number of elements initialized in A and B are m and n respectively.
 
 // O(m+n), O(1) space
 
-public class Solution {
-    public void merge(int A[], int m, int B[], int n) {
-        if(A == null && B == null) {
-            return;
-        }
-        int result = m + n - 1;
+class Solution {
+    /**
+     * @param A: sorted integer array A which has m elements, 
+     *           but size of A is m+n
+     * @param B: sorted integer array B which has n elements
+     * @return: void
+     */
+    public void mergeSortedArray(int[] A, int m, int[] B, int n) {
+        // write your code here
         while(m > 0 && n > 0) {
-            if(A[m - 1] < B[n - 1]) {
-                A[result] = B[n - 1];
-                n--;
-            } else {
-                A[result] = A[m - 1];
+            if(A[m - 1] > B[n - 1]) {
+                A[m + n - 1] = A[m - 1];
                 m--;
+            } else {
+                A[m + n - 1] = B[n - 1];
+                n--;
             }
-            result--;
         }
         while(n > 0) {
-            A[result] = B[n - 1];
-            result--;
+            A[m + n - 1] = B[n - 1];
             n--;
         }
+        return;
     }
 }
+
+
+// LintCode Challenge:
+// How can you optimize your algorithm if one array is very large and the other is very small?
+
+class Solution {
+    /**
+     * @param A and B: sorted integer array A and B.
+     * @return: A new sorted integer array
+     */
+    public ArrayList<Integer> mergeSortedArray(ArrayList<Integer> A, ArrayList<Integer> B) {
+        // write your code here
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        int i = 0, j = 0;
+        while(i < A.size() && j < B.size()) {
+            if(A.get(i) < B.get(j)) {
+                result.add(A.get(i));
+                i++;
+            } else {
+                result.add(B.get(j));
+                j++;
+            }
+        }
+        while(i < A.size()) {
+            result.add(A.get(i));
+            i++;
+        }
+        while(j < B.size()) {
+            result.add(B.get(j));
+            j++;
+        }
+        return result;
+    }
+}
+
