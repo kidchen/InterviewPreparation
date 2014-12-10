@@ -19,36 +19,36 @@ A solution set is:
 // NP: O(2^n), O(n) space for the result
 
 public class Solution {
-    public List<List<Integer>> combinationSum2(int[] num, int target) {
-        List<List<Integer>> result = new ArrayList<List<Integer>>();
+    public ArrayList<ArrayList<Integer>> combinationSum2(int[] num, int target) {
+        ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
         if(num == null || num.length == 0) {
             return result;
         }
-        // don't forget to sort the array at first
+        // don't forget to sort
         Arrays.sort(num);
-        List<Integer> sum = new ArrayList<Integer>();
-        helper(num, target, result, 0, sum);
+        ArrayList<Integer> item = new ArrayList<Integer>();
+        helper(num, target, result, item, 0);
         return result;
     }
     
-    private void helper(int[] num, int target, List<List<Integer>> result, int start, List<Integer> sum) {
+    private void helper(int[] num, int target, ArrayList<ArrayList<Integer>> result, ArrayList<Integer> item, int start) {
         if(target == 0) {
-            result.add(new ArrayList<Integer>(sum));
+            result.add(new ArrayList<Integer>(item));
             return;
         }
         for(int i = start; i < num.length; i++) {
-            // !!! still need to skip the duplicates !!!
-            //     --> if we need to use the same value, it will be considered in the next recursion, 
-            //         now we skip the duplicates value for not recalculate the cases (void of duplicates results)
-            // !!! Pay attention to i>start, not i>0 !!!
+            // still, we need to remove duplicates(avoid duplicated results)
+            // if we need to use the same value, it will be considered in the next recursion
+            // !!! i > start, rather than i > 0
             if(i > start && num[i] == num[i - 1]) {
                 continue;
             }
-            sum.add(num[i]);
             if(target - num[i] >= 0) {
-                helper(num, target - num[i], result, i + 1, sum);
+                item.add(num[i]);
+                // diff: here, we need to "i+1" to skip the current element
+                helper(num, target - num[i], result, item, i + 1);
+                item.remove(item.size() - 1);
             }
-            sum.remove(sum.size() - 1);
         }
     }
 }
