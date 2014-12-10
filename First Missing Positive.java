@@ -16,15 +16,13 @@ public class Solution {
             return 1;
         }
         for(int i = 0; i < A.length; i++) {
-            // !!! A[A[i] - 1] vs. A[i] !!!
-            // we only consider numbers that are positive && smaller or equal to A.length
-            // !!! Also, we skip the numbers that already in the right position !!!
-            if(A[i] <= A.length && A[i] > 0 && A[A[i] - 1] != A[i]) {
-                // !!! temp should store A[A[i] - 1] rather than A[i], consider [2,1] !!!
+            // A[i] should be positive && no larger than A.length && one larger than its index
+            if(A[i] > 0 && A[i] <= A.length && A[i] != A[A[i] - 1]) {
+                // have to temp A[A[i] - 1] rather A[i]
                 int temp = A[A[i] - 1];
                 A[A[i] - 1] = A[i];
                 A[i] = temp;
-                // !!! to still leave at this point, or use a while loop !!!
+                // !!! need to stay in current position after swap !!!
                 i--;
             }
         }
@@ -33,6 +31,7 @@ public class Solution {
                 return i + 1;
             }
         }
+        // means after for loop, then return A.length+1
         return A.length + 1;
     }
 }
