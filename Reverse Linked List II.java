@@ -58,30 +58,42 @@ public class Solution {
 
 // general reverse all:
 // by iterative: Time O(n), Space:O(1)
-public reverseListIteratively (Node root) {
-	if (root == null || root.next == null)
-		return;  //empty or just one node in list
-	Node Second = root.next;
-	//store third node before we change 
-	Node Third = Second.next;  
-	//Second's next pointer
-	Second.next = root;  //second now points to root
-	root.next = null;  //change root pointer to NULL
-	//only two nodes, which we already reversed
-	if (Third == null)
-		return;  
-	Node CurrentNode = Third;
-	Node PreviousNode = Second;
-	while (CurrentNode != null) { 
-		Node NextNode = CurrentNode.next;
-		CurrentNode.next = PreviousNode;
-	/*  repeat the process, but have to reset
-     the PreviousNode and CurrentNode
-	*/
-		PreviousNode = CurrentNode;
-		CurrentNode = NextNode;  
-	}
-	root  = PreviousNode; //reset the root node
+
+/**
+ * Definition for ListNode.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int val) {
+ *         this.val = val;
+ *         this.next = null;
+ *     }
+ * }
+ */ 
+public class Solution {
+    /**
+     * @param head: The head of linked list.
+     * @return: The new head of reversed linked list.
+     */
+    public ListNode reverse(ListNode head) {
+        // write your code here
+        if(head == null || head.next == null) {
+            return head;
+        }
+        ListNode dummy = new ListNode(0);
+        ListNode pre = dummy;
+        dummy.next = head;
+        ListNode first = pre.next;
+        ListNode cur = pre.next.next;
+        while(cur != null) {
+            ListNode next = cur.next;
+            cur.next = pre.next;
+            pre.next = cur;
+            cur = next;
+        }
+        first.next = null;
+        return dummy.next;
+    }
 }
 
 
