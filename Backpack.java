@@ -40,7 +40,7 @@ public class Solution {
                 }
             }
         }
-        // 
+        // return the last element
         return result[m];
     }
 }
