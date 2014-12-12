@@ -33,6 +33,7 @@ public class Solution {
         /*
         substring(include start, exclude end), substring(include start to the end)
         */
+        // !!! Note that i starts from 1 and ends when equals to s.length() !!!
         for(int i = 1; i <= s.length(); i++) {
             String sub = s.substring(0, i);
             if(isPalindrome(sub)) {
