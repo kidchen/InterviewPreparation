@@ -30,14 +30,11 @@ public class Solution {
         for(int i = 0; i < A.length; i++) {
             int size = A[i];
             // outer: select an item
-            // inner: decide whether put it into the bag or not(from last to first include 0)
-            for(int j = m; j >= 0; j--) {
-                // if the item is smaller than target, try each possible solution
-                if(j >= size) {
-                    // max(not put in, put in)
-                    // put in: previous [j-size] items and current one(size)
-                    result[j] = Math.max(result[j], result[j - size] + size);
-                }
+            // inner: decide whether put it into the bag or not(from last to the one smaller or equals to target)
+            for(int j = m; j >= size; j--) {
+                // max(not put in, put in)
+                // put in: previous [j-size] items and current one(size)
+                result[j] = Math.max(result[j], result[j - size] + size);
             }
         }
         // return the last element
