@@ -30,6 +30,7 @@ public class Solution {
                 end = mid;
             }
         }
+        // !!! return start or end rather than mid !!!
         return start;
     }
 }
