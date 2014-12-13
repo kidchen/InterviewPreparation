@@ -1,5 +1,6 @@
 /*
-Given an array S of n integers, are there elements a, b, c in S such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.
+Given an array S of n integers, are there elements a, b, c in S such that a + b + c = 0? 
+Find all unique triplets in the array which gives the sum of zero.
 
 Note:
 Elements in a triplet (a,b,c) must be in non-descending order. (ie, a ≤ b ≤ c)
@@ -13,48 +14,48 @@ The solution set must not contain duplicate triplets.
 
 // O(nlogn + n^2) = O(n^2), space O(n)
 
-
 public class Solution {
     public ArrayList<ArrayList<Integer>> threeSum(int[] num) {
         ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
-        if(num.length < 3 || num == null) return result;
-        // !!! don't forget to sort at first !!!
+        if(num == null || num.length < 3) {
+            return result;
+        }
         Arrays.sort(num);
-        // reverse for loop: be sure that this element is the biggest
-        // i >= 2 !!!
         for(int i = num.length - 1; i > 1; i--) {
-            // !!! not the last element but the same with the previous one, duplicate !!!
-            if(i < num.length - 1 && num[i] == num[i + 1]) 
+            // skip duplicates
+            if(i < num.length - 1 && num[i] == num[i + 1]) {
                 continue;
-            // i - 1 !!!
-            ArrayList<ArrayList<Integer>> temp = twoSum(num, -num[i], i - 1);
-            for(int j = 0; j < temp.size(); j++) {
-                temp.get(j).add(num[i]);
             }
-            result.addAll(temp);
+            // pass ArrayList<ArrayList<Integer>> to store all possible solutions
+            ArrayList<ArrayList<Integer>> items = twoSum(num, i - 1, -num[i]);
+            for(int j = 0; j < items.size(); j++) {
+                items.get(j).add(num[i]);
+            }
+            // use addAll to put all items in result
+            result.addAll(items);
         }
         return result;
     }
     
-    private ArrayList<ArrayList<Integer>> twoSum(int[] num, int target, int end) {
+    private ArrayList<ArrayList<Integer>> twoSum(int[] num, int end, int target) {
         ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
         int start = 0;
         while(start < end) {
             int sum = num[start] + num[end];
             if(sum == target) {
-                // every while loop, new a new set
-                ArrayList<Integer> set = new ArrayList<Integer>();
-                set.add(num[start]);
-                set.add(num[end]);
-                // add set to result in each loop
-                result.add(set);
+                ArrayList<Integer> item = new ArrayList<Integer>();
+                item.add(num[start]);
+                item.add(num[end]);
+                result.add(item);
+                // first move two pointers, then skip duplicates
                 start++;
                 end--;
-                // duplicate
-                while(start < end && num[start] == num[start - 1]) 
+                while(start < end && num[start] == num[start - 1]) {
                     start++;
-                while(start < end && num[end] == num[end + 1]) 
+                }
+                while(start < end && num[end] == num[end + 1]) {
                     end--;
+                }
             } else if(sum < target) {
                 start++;
             } else {
