@@ -1,3 +1,13 @@
+/*
+Given a collection of intervals, merge all overlapping intervals.
+
+For example,
+Given [1,3],[2,6],[8,10],[15,18],
+return [1,6],[8,10],[15,18].
+*/
+
+// O(nlogn + n) = O(n) time, O(1) space
+
 /**
  * Definition for an interval.
  * public class Interval {
@@ -8,26 +18,32 @@
  * }
  */
 public class Solution {
-    public ArrayList<Interval> merge(ArrayList<Interval> intervals) {
-        ArrayList<Interval> result = new ArrayList<Interval>();
-        if(intervals == null || intervals.size() == 0)
-            return intervals;
-        Comparator<Interval> comp = new Comparator<Interval>() {
+    public List<Interval> merge(List<Interval> intervals) {
+        List<Interval> result = new ArrayList<Interval>();
+        if(intervals == null || intervals.size() == 0) {
+            return result;
+        }
+        // create a new comparator
+        Comparator<Interval> camp = new Comparator<Interval>() {
+            // override without ";"
             @Override
+            // !!! get familiar with this constructor !!!
             public int compare(Interval i1, Interval i2) {
                 if(i1.start == i2.start) {
                     return i1.end - i2.end;
-                } else return i1.start - i2.start;
+                } else {
+                    return i1.start - i2.start;
+                }
             }
-        // !!! add ; after implement comparator
         };
-        Collections.sort(intervals, comp);
+        Collections.sort(intervals, camp);
         result.add(intervals.get(0));
         for(int i = 1; i < intervals.size(); i++) {
-            // [x,9] < [x,10]
+            // if no intersect
             if(result.get(result.size() - 1).end < intervals.get(i).start) {
                 result.add(intervals.get(i));
             } else {
+                // dealing with end
                 result.get(result.size() - 1).end = Math.max(result.get(result.size() - 1).end, intervals.get(i).end);
             }
         }
