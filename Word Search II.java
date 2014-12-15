@@ -59,3 +59,7 @@ public class Solution {
         return result;
     }
 }
+
+
+// Challenge
+// Using trie to implement your algorithm.
