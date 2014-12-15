@@ -2,8 +2,11 @@
  * Find the median of the two sorted arrays. The overall run time complexity should be O(log (m+n)).
  */
 
+// O(logk) time, O(logk) space (in this case, k = (m+n)/2)
+
 public class Solution {
     public double findMedianSortedArrays(int A[], int B[]) {
+        // check odd/even
         int len = A.length + B.length;
         if((A.length + B.length) % 2 == 1) {
             return helper(A, B, 0, 0, len / 2 + 1);
@@ -13,6 +16,7 @@ public class Solution {
     }
     
     // !!! k is not the index, but the kth top number !!!
+    // !!! when use k in array, need to -1 !!!
     private int helper(int[] A, int[] B, int astart, int bstart, int k) {
         // if not in A/B (need to add =, since if A is empty..)
         if(astart >= A.length) {
@@ -22,13 +26,15 @@ public class Solution {
             return A[astart + k - 1];
         }
         if(k == 1) {
+            // !!! index should be astart/bstart rather than 0 !!!
             return Math.min(A[astart], B[bstart]);
         }
-        // check validation of the index:
+        // find kth top:
         int ak = astart + k/2 - 1 < A.length ? A[astart + k/2 - 1] : Integer.MAX_VALUE;
         int bk = bstart + k/2 - 1 < B.length ? B[bstart + k/2 - 1] : Integer.MAX_VALUE;
         // !!! k-k/2, eg: k=3, odd number !!!
         if(ak < bk) {
+            // no need to -1, because we don't put it into arrays right now
             return helper(A, B, astart + k/2, bstart, k - k/2);
         } else {
             return helper(A, B, astart, bstart + k/2, k - k/2);
