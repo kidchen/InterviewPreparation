@@ -6,20 +6,8 @@ If you were only permitted to complete at most one transaction (ie, buy one and 
 design an algorithm to find the maximum profit.
 */
 
-public class Solution {
-    public int maxProfit(int[] prices) {
-        if(prices.length<2) return 0;
-        int min = prices[0], profit = 0;
-        for(int i = 1; i < prices.length; i++){
-            profit = prices[i]-min > profit ? prices[i]-min : profit;
-            min = prices[i] < min ? prices[i] : min;
-        }
-        return profit;
-    }
-}
-
-
-// DP Solution with Global&Local, O(n) & O(1)
+// DP Solution with Global&Local, 
+// O(n) time & O(1) space
 
 public class Solution {
     public int maxProfit(int[] prices) {
@@ -29,6 +17,7 @@ public class Solution {
         int local = 0;
         int global = 0;
         for(int i = 1; i < prices.length; i++) {
+        	// local: is current transaction > or < 0
             local = Math.max(local + prices[i] - prices[i - 1], 0);
             global = Math.max(local, global);
         }
