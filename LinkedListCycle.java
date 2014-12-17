@@ -1,24 +1,36 @@
+// Given a linked list, determine if it has a cycle in it.
+
+// O(n) time, O(1) space
+
 /**
- * Definition for singly-linked list.
- * class ListNode {
+ * Definition for ListNode.
+ * public class ListNode {
  *     int val;
  *     ListNode next;
- *     ListNode(int x) {
- *         val = x;
- *         next = null;
+ *     ListNode(int val) {
+ *         this.val = val;
+ *         this.next = null;
  *     }
  * }
- */
+ */ 
 public class Solution {
-    public boolean hasCycle(ListNode head) {
-        if (head == null || head.next == null) 
+    /**
+     * @param head: The first node of linked list.
+     * @return: True if it has a cycle, or false
+     */
+    public boolean hasCycle(ListNode head) {  
+        // write your code here
+        if(head == null || head.next == null) {
             return false;
+        }
+        ListNode fast = head;
         ListNode slow = head;
-        ListNode fast = head.next;
-        while(fast != null && fast.next != null) {
-            if (slow == fast) return true;
+        while(fast.next != null && fast.next.next != null) {
             slow = slow.next;
             fast = fast.next.next;
+            if(slow == fast) {
+                return true;
+            }
         }
         return false;
     }
