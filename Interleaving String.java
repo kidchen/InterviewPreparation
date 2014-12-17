@@ -10,7 +10,7 @@ When s3 = "aadbbcbcac", return true.
 When s3 = "aadbbbaccc", return false.
 */
 
-// O(n), O(s1.length()) space
+// O(m*n), O(s1.length()) space
 
 /*
  * 2D DP problem (can be reduced to 1D solution, below)
@@ -33,6 +33,7 @@ public class Solution {
         }
         boolean[] result = new boolean[s1.length() + 1];
         result[0] = true;
+        // initial the first row
         for(int i = 0; i < s1.length(); i++) {
             result[i + 1] = s1.charAt(i) == s3.charAt(i) && result[i];
         }
@@ -41,7 +42,10 @@ public class Solution {
             result[0] = s2.charAt(i) == s3.charAt(i) && result[0];
             for(int j = 0; j < s1.length(); j++) {
             // !!! s3.charAt(i + j + 1) !!!
-                result[j + 1] = (result[j + 1] && s2.charAt(i) == s3.charAt(i + j + 1)) || (result[j] && s1.charAt(j) == s3.charAt(i + j + 1));
+            // s2(i) && result[j+1], s1(j) && result[j] : 
+            // s2 go down, so the above one should be true, s1 go right, so the left one should be true
+                result[j + 1] = (result[j + 1] && s2.charAt(i) == s3.charAt(i + j + 1)) 
+                    || (result[j] && s1.charAt(j) == s3.charAt(i + j + 1));
             }
         }
         return result[s1.length()];
