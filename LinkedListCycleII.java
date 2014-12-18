@@ -1,31 +1,44 @@
+/*
+Given a linked list, return the node where the cycle begins. If there is no cycle, return null.
+*/
+
 /**
- * Definition for singly-linked list.
- * class ListNode {
+ * Definition for ListNode.
+ * public class ListNode {
  *     int val;
  *     ListNode next;
- *     ListNode(int x) {
- *         val = x;
- *         next = null;
+ *     ListNode(int val) {
+ *         this.val = val;
+ *         this.next = null;
  *     }
  * }
- */
+ */ 
 public class Solution {
-    public ListNode detectCycle(ListNode head) {
-        if(head==null || head.next==null) return null;
-        ListNode fast=head, slow=head;
-        while(fast!=null && fast.next!=null){
-            fast = fast.next.next;
+    /**
+     * @param head: The first node of linked list.
+     * @return: The node where the cycle begins. 
+     *           if there is no cycle, return null
+     */
+    public ListNode detectCycle(ListNode head) {  
+        // write your code here
+        if(head == null || head.next == null) {
+            return null;
+        }
+        ListNode slow = head;
+        ListNode fast = head;
+        while(fast.next != null && fast.next.next != null) {
             slow = slow.next;
-            if(fast==slow) break;
+            fast = fast.next.next;
+            if(slow == fast) {
+                fast = head;
+                while(slow != fast) {
+                    slow = slow.next;
+                    fast = fast.next;
+                }
+                return slow;
+            }
         }
-        if(fast!=slow) return null;
-        // set fast to the start, and then move at the same speed.
-        fast = head;
-        while(fast!=slow){
-            fast=fast.next;
-            slow=slow.next;
-        }
-        return fast;
+        return null;
     }
 }
 
