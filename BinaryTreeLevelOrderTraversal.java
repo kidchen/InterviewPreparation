@@ -72,6 +72,7 @@ public class Solution {
             return result;
         }
         LinkedList<TreeNode> queue = new LinkedList<TreeNode>();
+        // !!! need to use another arraylist to store the items, so that there will no useless [] in result !!!
         ArrayList<Integer> level = new ArrayList<Integer>();
         queue.add(root);
         int lastNum = 1;
@@ -92,7 +93,6 @@ public class Solution {
                 lastNum = curNum;
                 curNum = 0;
                 result.add(level);
-                // can't use clear(), since we need to use extra space to store the result anyway
                 level = new ArrayList<Integer>();
             }
         }
