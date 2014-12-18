@@ -17,6 +17,7 @@ public class Solution {
         }
         int start = 0;
         int end = A.length - 1;
+        // should add "=", if there is only one element..
         while(start <= end) {
             int mid = (start + end) / 2;
             if(A[mid] == target) {
