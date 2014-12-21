@@ -50,3 +50,57 @@ public class Solution {
         return diff;
     }
 }
+
+
+// LintCode
+
+public class Solution {
+    /**
+     * @param numbers: Give an array numbers of n integer
+     * @param target : An integer
+     * @return : return the sum of the three integers, the sum closest target.
+     */
+    public int threeSumClosest(int[] numbers ,int target) {
+        // write your code here
+        if(numbers == null || numbers.length < 3) {
+            return 0;
+        }
+        Arrays.sort(numbers);
+        int minDiff = Integer.MAX_VALUE;
+        for(int i = numbers.length - 1; i > 1; i--) {
+            int diff = helper(numbers, target - numbers[i], i - 1);
+            if(Math.abs(minDiff) > Math.abs(diff)) {
+                minDiff = diff;
+            }
+        }
+        return target + minDiff;
+    }
+    
+    private int helper(int[] numbers, int target, int end) {
+        int start = 0;
+        int minDiff = Integer.MAX_VALUE;
+        while(start < end) {
+            int sum = numbers[start] + numbers[end];
+            if(sum == target) {
+                return 0;
+            } else {
+                int diff = sum - target;
+                if(Math.abs(minDiff) > Math.abs(diff)) {
+                    minDiff = diff;
+                }
+                if(sum < target) {
+                    start++;
+                    while(start < end && numbers[start] == numbers[start - 1]) {
+                        start++;
+                    }
+                } else {
+                    end--;
+                    while(start < end && numbers[end] == numbers[end + 1]) {
+                        end--;
+                    }
+                }
+            }
+        }
+        return minDiff;
+    }
+}
