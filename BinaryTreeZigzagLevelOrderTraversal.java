@@ -18,49 +18,59 @@ return its zigzag level order traversal as:
 */
 
 // iteration(BFS): use Collections.reverse(), this operation is linear time cost of time
+// O(n), O(n)
+// Another thought: check level % 2 first, then decide to add left,right or right,left.
 
 /**
- * Definition for binary tree
+ * Definition of TreeNode:
  * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode(int x) { val = x; }
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
  * }
  */
+ 
 public class Solution {
+    /**
+     * @param root: The root of binary tree.
+     * @return: A list of lists of integer include 
+     *          the zigzag level order traversal of its nodes' values 
+     */
     public ArrayList<ArrayList<Integer>> zigzagLevelOrder(TreeNode root) {
+        // write your code here
         ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
         if(root == null) {
             return result;
         }
         LinkedList<TreeNode> queue = new LinkedList<TreeNode>();
+        queue.offer(root);
         ArrayList<Integer> level = new ArrayList<Integer>();
-        // !!! don't forget to add root at first !!!
-        queue.add(root);
-        int levelNum = 0;
-        int lastNum = 1;
-        int curNum = 0;
+        int lastCount = 1;
+        int curCount = 0;
+        boolean order = false;
         while(!queue.isEmpty()) {
             TreeNode cur = queue.poll();
             level.add(cur.val);
-            lastNum--;
+            lastCount--;
             if(cur.left != null) {
-                queue.add(cur.left);
-                curNum++;
+                queue.offer(cur.left);
+                curCount++;
             }
             if(cur.right != null) {
-                queue.add(cur.right);
-                curNum++;
+                queue.offer(cur.right);
+                curCount++;
             }
-            if(lastNum == 0) {
-                lastNum = curNum;
-                curNum = 0;
-                levelNum++;
-                if(levelNum % 2 == 0){
+            if(lastCount == 0) {
+                lastCount = curCount;
+                curCount = 0;
+                if(order) {
                     Collections.reverse(level);
                 }
                 result.add(level);
+                order = order == true ? false : true;
                 level = new ArrayList<Integer>();
             }
         }
