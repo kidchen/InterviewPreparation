@@ -87,7 +87,7 @@ public class Solution {
             }
             leftLen++;
         }
-        root.left = helper(preorder, inorder, preStart + 1, preStart + leftLen, inStart, inStart + leftLen);
+        root.left = helper(preorder, inorder, preStart + 1, preStart + leftLen, inStart, inStart + leftLen - 1);
         root.right = helper(preorder, inorder, preStart + leftLen + 1, preEnd, inStart + leftLen + 1, inEnd);
         return root;
     }
