@@ -40,6 +40,7 @@ public class Solution {
         // passing the head in recursion
         ArrayList<ListNode> list = new ArrayList<ListNode>();
         list.add(head);
+        // !!! end = len - 1 !!!
         return helper(list, 0, len - 1);
     }
      
@@ -53,7 +54,7 @@ public class Solution {
         // get mid val
         int mid = (start + end) / 2;
          
-        // !!! build left sub tree !!!
+        // !!! build left sub tree: from start to mid-1 !!!
         TreeNode left = helper(list, start, mid - 1);
         // !!! build root node !!!
         TreeNode root = new TreeNode(list.get(0).val);
