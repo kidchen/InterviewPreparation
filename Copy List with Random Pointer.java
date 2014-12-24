@@ -41,6 +41,51 @@ public class Solution {
 }
 
 
+// LintCode:
+
+/**
+ * Definition for singly-linked list with a random pointer.
+ * class RandomListNode {
+ *     int label;
+ *     RandomListNode next, random;
+ *     RandomListNode(int x) { this.label = x; }
+ * };
+ */
+public class Solution {
+    /**
+     * @param head: The head of linked list with a random pointer.
+     * @return: A new head of a deep copy of the list.
+     */
+    public RandomListNode copyRandomList(RandomListNode head) {
+        // write your code here
+        if(head == null) {
+            return null;
+        }
+        HashMap<RandomListNode, RandomListNode> map = new HashMap<RandomListNode, RandomListNode>();
+        map.put(head, new RandomListNode(head.label));
+        RandomListNode cur = head;
+        while(cur != null) {
+            // !!! have to check whether its next == null first !!!
+            if(cur.next != null) {
+                if(!map.containsKey(cur.next)) {
+                    map.put(cur.next, new RandomListNode(cur.next.label));
+                }
+                map.get(cur).next = map.get(cur.next);
+            }
+            if(cur.random != null) {
+                if(!map.containsKey(cur.random)) {
+                    map.put(cur.random, new RandomListNode(cur.random.label));
+                }
+                map.get(cur).random = map.get(cur.random);
+            }
+            cur = cur.next;
+        }
+        return map.get(head);
+    }
+}
+
+
+
 
 // solution 2 : O(n), O(1)
 // old1 -> new1 -> old2 -> new2 -> old3 -> new3
