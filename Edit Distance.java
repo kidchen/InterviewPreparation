@@ -1,5 +1,6 @@
 /*
-Given two words word1 and word2, find the minimum number of steps required to convert word1 to word2. (each operation is counted as 1 step.)
+Given two words word1 and word2, find the minimum number of steps required to convert word1 to word2. 
+(each operation is counted as 1 step.)
 
 You have the following 3 operations permitted on a word:
 
@@ -7,6 +8,8 @@ a) Insert a character
 b) Delete a character
 c) Replace a character
 */
+
+// O(m*n) time/space
 
 public class Solution {
     public int minDistance(String word1, String word2) {
@@ -21,7 +24,8 @@ public class Solution {
         for(int j = 0; j <= len2; j++) {
             dp[0][j] = j;
         }
-        // calculate the distance
+        // calculate the distance:
+        // in case of i or j == 0, we start from i = 0/ j = 0 rather than equals to 1
         for(int i = 0; i < len1; i++) {
             char c1 = word1.charAt(i);
             for(int j = 0; j < len2; j++) {
