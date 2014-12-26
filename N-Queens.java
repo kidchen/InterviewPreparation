@@ -52,6 +52,7 @@ public class Solution {
                 item[i] = eachRow.toString();
             }
             result.add(item);
+            // !!! need to return after finished one solution !!!
             return;
         }
         for(int i = 0; i < n; i++) {
@@ -66,7 +67,7 @@ public class Solution {
     private boolean valid(int row, int[] col) {
         // check all rows that have been assigned Q
         for(int i = 0; i < row; i++) {
-            // if this position has been used(two Qs appears in the same col), OR
+            // if this position has been used before(two Qs appears in the same col), OR
             // two Qs appears in the same diagonal
             if(col[i] == col[row] || row - i == Math.abs(col[row] - col[i])) {
                 return false;
