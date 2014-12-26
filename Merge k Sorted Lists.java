@@ -26,7 +26,7 @@ public class Solution {
     
     // !!! Merge sort the lists !!!
     private ListNode helper(List<ListNode> lists, int first, int last) {
-        // !!! each time, divide the lists by two !!!
+        // !!! use if rather than while: each time, divide the lists by two !!!
         if(first < last) {
             int mid = (first + last) / 2;
             return merge(helper(lists, first, mid), helper(lists, mid + 1, last));
@@ -81,7 +81,6 @@ public class Solution {
  */
 public class Solution {
     public ListNode mergeKLists(ArrayList<ListNode> lists) {
-    
         // use PriorityQueue to create a heap
         // the top of the heap will be the smallest element in the heap
         // since we use ListNode as element, we need to override compare method in comparator
