@@ -97,3 +97,45 @@ public class Solution {
         }
     }
 }
+
+
+// LintCode:
+
+public class Solution {
+    /**
+     * @param nums: A list of integers
+     * @return: A list of integers that's next permuation
+     */
+    public ArrayList<Integer> nextPermuation(ArrayList<Integer> nums) {
+		// write your code
+		if(nums == null || nums.size() == 0) {
+		    return null;
+		}
+		int p = nums.size() - 2;
+		int q = nums.size() - 1;
+		while(p >= 0 && nums.get(p) >= nums.get(p + 1)) {
+		    p--;
+		}
+		if(p >= 0) {
+		    while(q > p && nums.get(q) <= nums.get(p)) {
+		        q--;
+		    }
+		    int temp = nums.get(p);
+		    nums.set(p, nums.get(q));
+		    nums.set(q, temp);
+		}
+		reverse(nums, p + 1);
+		return nums;
+    }
+    
+    private void reverse(ArrayList<Integer> nums, int start) {
+        int end = nums.size() - 1;
+        while(start < end) {
+            int temp = nums.get(start);
+            nums.set(start, nums.get(end));
+            nums.set(end, temp);
+            start++;
+            end--;
+        }
+    }
+}
