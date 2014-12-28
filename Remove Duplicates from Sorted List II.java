@@ -19,34 +19,28 @@ Given 1->1->1->2->3, return 2->3.
  */
 public class Solution {
     public ListNode deleteDuplicates(ListNode head) {
-        if(head == null || head.next == null) return head;
-        // dummy: reserve the head (return dummy.next)
-        // !!! DO NOT ADD dummy.next = head, since pre = dummy later and we will operate pre !!!
+        if(head == null || head.next == null) {
+            return head;
+        }
         ListNode dummy = new ListNode(0);
-        // pre: keep the return list: pre -> 1 -> 2 ...
-        // cur: keep moving pointer (from the first element)
         ListNode pre = dummy;
         ListNode cur = head;
-        // dupValue: store the duplicate value
         int dupValue = Integer.MIN_VALUE;
         while(cur != null && cur.next != null) {
-            // find same value
             if(cur.val == cur.next.val) {
                 dupValue = cur.val;
                 while(cur.val == dupValue) {
-                    // skip same value nodes
                     cur = cur.next;
-                    // if rest elements are all the same
-                    if(cur == null) return dummy.next;
+                    // !!! if rest elements are all the same !!!
+                    if(cur == null) {
+                        return dummy.next;
+                    }
                 }
             } else {
-                // add cur to pre.next: pre -> 1 -> 1 -> (2 cur) ==> pre -> 2
-                // move pre to the new element: (pre 2)
-                // move cur forward
-                // add null to pre.next: (pre 2) -> null
                 pre.next = cur;
                 pre = pre.next;
                 cur = cur.next;
+                // !!! add null to pre.next: in case the rest of elements are the same and returned in line 36 !!!
                 pre.next = null;
             }
         }
@@ -58,7 +52,7 @@ public class Solution {
 }
 
 
-/************UPDATE AUG 16**************/
+/************OLD VERSION AUG 16**************/
 /**
  * Definition for singly-linked list.
  * public class ListNode {
