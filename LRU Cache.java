@@ -100,7 +100,8 @@ public class LRUCache {
             // add newNode to most
             // !!! if the capacity = 1, that is least == null, the same as most == null, set 
             // least = newNode, here we won't set most = newNode since later we will do it !!!
-            if(least == null || most == null) {
+            if(most == null) {
+                // !!!
                 least = newNode;
             } else {
                 most.next = newNode;
