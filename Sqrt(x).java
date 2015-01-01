@@ -6,6 +6,37 @@ Compute and return the square root of x.
 
 // O(logx), O(1) space cost
 
+class Solution {
+    /**
+     * @param x: An integer
+     * @return: The sqrt of x
+     */
+    public int sqrt(int x) {
+        // write your code here
+        if(x < 0) {
+            return -1;
+        }
+        // !!! left from 1 !!!
+        int left = 1;
+        int right = x;
+        // !!! left <= right !!!
+        while(left <= right) {
+            int mid = (left + right) / 2;
+            // !!! can't use mid*mid, think about the boundry conditions !!!
+            if(mid <= x / mid && (mid + 1) > x / (mid + 1)) {
+                return mid;
+            } else if(mid > x / mid) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return 0;
+    }
+}
+
+
+/******* old version *******/
 public class Solution {
     public int sqrt(int x) {
         if(x < 0) {
