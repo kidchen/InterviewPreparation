@@ -46,6 +46,7 @@ public class Solution {
                         }
                         curChar[j] = c;
                         String temp = new String(curChar);
+                        // !!! can't use "==", have to use .equals to check whether their values are equal. !!!
                         if(temp.equals(end)) {
                             return result + 1;
                         }
