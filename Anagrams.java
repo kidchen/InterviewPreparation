@@ -53,4 +53,43 @@ public class Solution {
 // Use a hashmap<Character, Integer> to store each element and its appearance times in one string, and then
 // traverse the other string and check if elements and its appearance times are the same with the hashmap(remove when the same),
 // finally check the hashmap, if it is empty, then return true.
+
 // This cost O(m+n) time and O(m) space, smaller than the sort method (m, n represents the length of two strings)
+
+public class Solution {
+    /**
+     * @param s: The first string
+     * @param b: The second string
+     * @return true or false
+     */
+    public boolean anagram(String s, String t) {
+        // write your code here
+        if(s == null && t == null) {
+            return true;
+        }
+        if(s.length() != t.length()) {
+            return false;
+        }
+        HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+        for(int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if(map.containsKey(c)) {
+                map.put(c, map.get(c) + 1);
+            } else {
+                map.put(c, 1);
+            }
+        }
+        for(int i = 0; i < t.length(); i++) {
+            char c = t.charAt(i);
+            if(!map.containsKey(c)) {
+                return false;
+            } else {
+                map.put(c, map.get(c) - 1);
+                if(map.get(c) < 1) {
+                    map.remove(c);
+                }
+            }
+        }
+        return map.isEmpty();
+    }
+}
