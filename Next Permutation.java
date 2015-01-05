@@ -29,7 +29,7 @@ public class Solution {
                         break;
                     }
                 }
-                // swap "3" and "4"
+                // swap "3" and "4" --> "4" is the first bigger value from the back (find smaller one if prev permutation)
                 int temp = num[i];
                 num[i] = num[j];
                 num[j] = temp;
