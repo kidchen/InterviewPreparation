@@ -29,23 +29,24 @@ public class Solution {
         return result;
     }
     
-    void helper(int[] num, ArrayList<ArrayList<Integer>> result, ArrayList<Integer> subset, int len){
+    void helper(int[] num, ArrayList<ArrayList<Integer>> result, ArrayList<Integer> subset, int len) {
         // !!! have to use new ArrayList, because subset will be changed later !!!
         result.add(new ArrayList<Integer>(subset));
-        for(int i=len; i<num.length; i++){
+        for(int i = len; i < num.length; i++) {
             // only diff: skip duplicates
-            if(i!=len && num[i]==num[i-1]){
+            if(i!=len && num[i]==num[i-1]) {
                 continue;
             }
             subset.add(num[i]);
-            helper(num,result,subset,i+1);
-            subset.remove(subset.size()-1);
+            helper(num,result,subset,i + 1);
+            subset.remove(subset.size() - 1);
         }
     }
 }
 
 
 // No recursion method:
+// when meet dup, we only add second half(size) of the current elements in the result
 
 public class Solution {
     public ArrayList<ArrayList<Integer>> subsetsWithDup(int[] num) {
@@ -66,7 +67,7 @@ public class Solution {
                 result.add(item);
             }
             if(i < num.length - 1 && num[i] == num[i + 1]) {
-                // !!! when meet dup, start from current size !!!
+                // !!! when meet dup, start from current *size* !!!
                 start = size;
             } else {
                 // don't forget to re-set 0 if no dup
