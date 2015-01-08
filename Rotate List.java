@@ -37,6 +37,7 @@ public class Solution {
             count++;
         }
         if(fast == null) {
+            // !!! have to use mod rather than minus !!!
             n %= count;
             // when n equals to the length of the list, straightly return head
             if(n == 0) {
