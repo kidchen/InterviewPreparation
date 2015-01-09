@@ -45,5 +45,38 @@ public class Solution {
 // haystack = abacde, then substring = abacd: hashcode = h (== needle)
 //                         substring = bacde: hashcode = h/29 + 5*29^4 (!= needle)
 // Find the hashcode: 
-// in order to be unique, we choose the bigger prime(su-shu, 29 in this case) than the total char(all lower case, 26, for example) as the base(power)
+// in order to be unique, we choose the bigger prime(su-shu, 29 in this case) than the total char
+// (all lower case, 26, for example) as the base(power)
 
+
+// LintCode:
+
+class Solution {
+    /**
+     * Returns a index to the first occurrence of target in source, or -1  if target is not part of source.
+     * @param source string to be scanned.
+     * @param target string containing the sequence of characters to match.
+     */
+    public int strStr(String source, String target) {
+        //write your code here
+        if(source == null || target == null){
+            return -1;
+        }
+        if(target.length() == 0){
+            return 0;
+        }
+        for(int i = 0; i <= source.length() - target.length(); i++) {
+            boolean find = true;
+            for(int j = 0; j < target.length(); j++) {
+                if(source.charAt(i + j) != target.charAt(j)) {
+                    find = false;
+                    break;
+                }
+            }
+            if(find) {
+                return i;
+            }
+        }
+        return -1;
+    }
+}
