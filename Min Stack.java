@@ -45,6 +45,3 @@ class MinStack {
         return 0;
     }
 }
-
-
-// Memory Limit Exceeded... why?
