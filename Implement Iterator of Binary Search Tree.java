@@ -34,51 +34,62 @@ Super Star: Extra memory usage O(1)
  *    do something for node
  * } 
  */
-public class Solution {
-    //@param root: The root of binary tree.
+/**
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+
+public class BSTIterator {
+    
     private Stack<TreeNode> stack;
-    public Solution(TreeNode root) {
-        // write your code here
+
+    public BSTIterator(TreeNode root) {
         stack = new Stack<TreeNode>();
         if(root == null) {
             return;
         }
         stack.push(root);
-        TreeNode cur = root.left;
-        while(cur != null) {
-            stack.push(cur);
-            cur = cur.left;
+        while(root.left != null) {
+            root = root.left;
+            stack.push(root);
         }
     }
 
-    //@return: True if there has next node, or false
+    /** @return whether we have a next smallest number */
     public boolean hasNext() {
-        // write your code here
         if(stack.isEmpty()) {
             return false;
-        } else {
-            return true;
         }
+        return true;
     }
-    
-    //@return: return next node
-    public TreeNode next() {
-        // write your code here
+
+    /** @return the next smallest number */
+    public int next() {
         if(stack.isEmpty()) {
-            return null;
+            return Integer.MIN_VALUE;
         }
         TreeNode next = stack.pop();
         TreeNode cur = next.right;
         if(cur == null) {
-            return next;
+            return next.val;
         } else {
             stack.push(cur);
-            TreeNode left = cur.left;
-            while(left != null) {
-                stack.push(left);
-                left = left.left;
+            while(cur.left != null) {
+                cur = cur.left;
+                stack.push(cur);
             }
-            return next;
         }
+        return next.val;
     }
 }
+
+/**
+ * Your BSTIterator will be called like this:
+ * BSTIterator i = new BSTIterator(root);
+ * while (i.hasNext()) v[f()] = i.next();
+ */
