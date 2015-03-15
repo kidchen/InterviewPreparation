@@ -1,21 +1,33 @@
+/*
+Determine whether an integer is a palindrome. Do this without extra space.
+*/
+
+// O(n) runtime, O(1) space
+
 public class Solution {
     public boolean isPalindrome(int x) {
-        if(x<0) return false;
+        if(x < 0) {
+        	return false;
+        }
+        
         // fig: how many figures in x
         int fig = 1;
-        while(x/fig>=10){
-            fig*=10;
+        while(x / fig >= 10){
+            fig *= 10;
         }
-        while(x!=0){
-            int left = x/fig;
-            int right = x%10;
-            if(left!=right) return false;
+        while(x != 0){
+            int left = x / fig;
+            int right = x % 10;
+            if(left != right) {
+            	return false;
+            }
             // 12321
             // 232
             // 3
-            x= (x%fig)/10;
-            fig/=100;
+            x = (x % fig) / 10;
+            fig /= 100;
         }
+        
         return true;
     }
 }
