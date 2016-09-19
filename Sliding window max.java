@@ -15,32 +15,36 @@ Output: An array B[], B[i] is the maximum value of from A[i] to A[i+w-1]
 Requirement: Find a good optimal way to get B[i]
 
 */
- public static Integer[] getMaxInSlideWindow(Integer[] A, Integer w) {
-     // invalid input
-     if (A == null || w <= 0 || A.length - w < 0) return null;
 
-     Integer[] B = new Integer[A.length - w + 1];
-
-     // auxiliary queue that is sorted in descending order
-     LinkedList<Integer> q = new LinkedList<Integer>();
-
-     for (int i = 0; i < A.length; i++) {
-         // enqueue. Remove those smaller values
-         int data = A[i];
-         while (!q.isEmpty() && q.getLast() < data) {
-             q.removeLast();
-         }
-         q.add(data);
-
-         if (i < w - 1) continue; 
-
-         // dequeue. If the current number is the maximum. Also remove it
-         // from the queue
-         B[i - w + 1] = q.get(0);
-         if (A[i - w + 1] == B[i - w + 1]) {
-             q.removeFirst();
-         }
-     }
-
-     return B;
- }
+public class Solution {
+    /**
+     * @param nums: A list of integers.
+     * @return: The maximum number inside the window at each moving.
+     */
+    public ArrayList<Integer> maxSlidingWindow(int[] nums, int k) {
+        // write your code here
+        ArrayList<Integer> result = new ArrayList<>();
+        if (nums == null || nums.length == 0 || nums.length - k < 0) {
+            return result;
+        }
+        // queue: first-max, last-min
+        LinkedList<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < nums.length; i++) {
+            int num = nums[i];
+            // here: queue max size is 2
+            while (!queue.isEmpty() && queue.getLast() < num) {
+                queue.removeLast();
+            }
+            queue.add(num);
+            if (i + 1 < k) {
+                continue;
+            }
+            result.add(queue.getFirst());
+            // remove first one if it will not be in the window next round
+            if (queue.getFirst() == nums[i - k + 1]) {
+                queue.removeFirst();
+            }
+        }
+        return result;
+    }
+}
