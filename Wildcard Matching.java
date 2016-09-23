@@ -20,48 +20,64 @@ isMatch("aab", "c*a*b") → false
 */
 
 // Note: '*' represent any substring, that means ("abbccd", "a*d") -> true, which * represent "bbcc"
-// O(2^n) worst case, this is the brute force method, optimal solution is using DP
+// O(2^n) worst case, this is the brute force (greedy) method, optimal solution is using DP
 // DP reference: http://blog.csdn.net/linhuanmars/article/details/21198049
 
-public class Solution {
-    public boolean isMatch(String s, String p) {
-        if(p.length() == 0) {
-            return s.length() == 0;
-        }
-        int i = 0;
-        int j = 0;
-        int star = -1;
-        int spoint = -1;
-        while(i < s.length()) {
-            // normal case
-            if(j < p.length() && (s.charAt(i) == p.charAt(j) || p.charAt(j) == '?')) {
-                i++;
-                j++;
-            } else if(j < p.length() && p.charAt(j) == '*') {
-                // when face to a '*', assume it represents empty, record i & j and move j forward
-                star = j;
-                spoint = i;
-                j++;
-            } else if(star != -1) {
-                // if it is not a normal case and j is not a '*' but there is a star record:
-                // go back to the position when we face to the star, try it to make * = one char in i
-                // by move spoint forward
-                i = spoint + 1;
-                j = star + 1;
-                spoint++;
-            } else {
-                return false;
+    public class Solution {
+        /**
+         * @param s: A string
+         * @param p: A string includes "?" and "*"
+         * @return: A boolean
+         */
+        public boolean isMatch(String s, String p) {
+            // write your code here
+            if (s == null || p == null) {
+                return s == null && p == null;
             }
+            if (p.length() == 0) {
+                return s.length() == 0;
+            }
+            int i = 0;
+            int j = 0;
+            // index of the star
+            int star = -1;
+            // index of the s, where the "star" represents end with (exclude)
+            int sIndex = -1;
+            while (i < s.length()) {
+                // normal case:
+                if (j < p.length() && (p.charAt(j) == '?' || p.charAt(j) == s.charAt(i))) {
+                    i++;
+                    j++;
+                } else if (j < p.length() && p.charAt(j) == '*') {
+                    // when face to a '*', assume it represents empty, record i & j and move j forward
+                    // *: setup flags
+                    // default is * means empty
+                    star = j;
+                    sIndex = i;
+                    // don't forget to move forward j
+                    j++;
+                } else if (star > -1) {
+                    // not normal case and there was a star before at "star", which represents end with sIndex
+                    // let's increase the index to see whether it represents more...
+                    // if it is not a normal case and j is not a '*' but there is a star record:
+                    // go back to the position when we face to the star, try it to make * = one char in i
+                    // by move spoint forward
+                    j = star + 1;
+                    i = sIndex + 1;
+                    sIndex++;
+                } else {
+                    return false;
+                }
+            }
+            // !!! don't forget to ignore any left '*' in p !!!
+            // if only left '*', j++
+            while (j < p.length() && p.charAt(j) == '*') {
+                j++;
+            }
+            // return the result by checking any left in p except '*'
+            return p.length() == j;
         }
-        // !!! don't forget to ignore any left '*' in p !!!
-        // if only left '*', j++
-        while(j < p.length() && p.charAt(j) == '*') {
-            j++;
-        }
-        // return the result by check any left in p except '*'
-        return j == p.length();
     }
-}
 
 // note: i = 0;
 // num1 = i++; --> num1 = 0, i = 1;
