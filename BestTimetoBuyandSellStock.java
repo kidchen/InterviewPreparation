@@ -6,6 +6,30 @@ If you were only permitted to complete at most one transaction (ie, buy one and 
 design an algorithm to find the maximum profit.
 */
 
+public class Solution {
+    /**
+     * @param prices: Given an integer array
+     * @return: Maximum profit
+     */
+    public int maxProfit(int[] prices) {
+        // write your code here
+        if(prices == null || prices.length < 2) {
+            return 0;
+        }
+        int max = 0;
+	// minPrice so far
+        int minPrice = prices[0];
+        for (int i = 1; i < prices.length; i++) {
+            minPrice = Math.min(prices[i], minPrice);
+            max = Math.max(max, prices[i] - minPrice);
+        }
+        return max;
+    }
+}
+
+
+/***** OLD VERSION *****/
+
 // DP Solution with Global&Local, 
 // O(n) time & O(1) space
 
