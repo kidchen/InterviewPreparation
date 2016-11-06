@@ -31,7 +31,7 @@ public class Solution {
 // O(n), O(logn) space for the queue(one level's nodes)
 
 /**
- * Definition for binary tree
+ * Definition for a binary tree node.
  * public class TreeNode {
  *     int val;
  *     TreeNode left;
@@ -41,34 +41,31 @@ public class Solution {
  */
 public class Solution {
     public int maxDepth(TreeNode root) {
-        if(root == null) {
+        if (root == null) {
             return 0;
         }
-        LinkedList<TreeNode> queue = new LinkedList<TreeNode>();
-        queue.add(root);
-        // !!! don't forget to use two counters to track the end of each level !!!
-        int lastLevel = 1;
-        int curLevel = 0;
-        int level = 1;
-        while(!queue.isEmpty()) {
-            TreeNode cur = queue.poll();
-            lastLevel--;
-            if(cur.left != null) {
-                queue.add(cur.left);
-                curLevel++;
+        LinkedList<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        int depth = 0;
+        int lastLevelNum = 1;
+        int curLevelNum = 0;
+        while (!queue.isEmpty()) {
+            TreeNode curNode = queue.poll();
+            lastLevelNum--;
+            if (curNode.left != null) {
+                queue.offer(curNode.left);
+                curLevelNum++;
             }
-            if(cur.right != null) {
-                queue.add(cur.right);
-                curLevel++;
+            if (curNode.right != null) {
+                queue.offer(curNode.right);
+                curLevelNum++;
             }
-            if(lastLevel == 0) {
-                if(!queue.isEmpty()) {
-                    level++;
-                }
-                lastLevel = curLevel;
-                curLevel = 0;
+            if (lastLevelNum == 0) {
+                lastLevelNum = curLevelNum;
+                curLevelNum = 0;
+                depth++;
             }
         }
-        return level;
+        return depth;
     }
 }
