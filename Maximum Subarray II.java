@@ -36,7 +36,9 @@ public class Solution {
         right[len - 1] = nums.get(len - 1);
         int max = nums.get(0);
         for(int i = 1; i < len; i++) {
+            // max: max sum includes current number (i)
             max = Math.max(nums.get(i), nums.get(i) + max);
+            // left[i]: max sum so far (may or may not include current number (i))
             left[i] = Math.max(left[i - 1], max);
         }
         max = nums.get(len - 1);

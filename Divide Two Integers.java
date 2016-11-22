@@ -6,6 +6,54 @@ Divide two integers without using multiplication, division and mod operator.
 
 // bit operation: O(logn)
 
+
+/***** UPDATE *****/
+public class Solution {
+    /**
+     * @param dividend the dividend
+     * @param divisor the divisor
+     * @return the result
+     */
+    public int divide(int dividend, int divisor) {
+        // Write your code here
+        if (divisor == 0) {
+            return dividend >= 0 ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+        }
+        if (dividend == Integer.MIN_VALUE && divisor == -1) {
+            return Integer.MAX_VALUE;
+        }
+        boolean isNeg = (dividend ^ divisor) >>> 31 == 1;
+        int result = 0;
+        long dividendLong = Math.abs((long)dividend);
+        long divisorLong = Math.abs((long)divisor);
+        // get base n:
+        // num=a_0*2^0+a_1*2^1+a_2*2^2+...+a_n*2^n
+        int base = 0;
+        // divisor <= dividend / 2 (in case outOfBound)
+        while (divisorLong <= (dividendLong >> 1)) {
+            base++;
+            // divisor * 2
+            divisorLong <<= 1;
+        }
+        // at this moment, divisorLong > dividendLong
+        while (base >= 0) {
+            // every time divisor / 2 since it *2 already
+            // if dividend >= divisor, result updated, dividend updated
+            if (dividendLong >= divisorLong) {
+                // result += (2^base)
+                result += (1 << base);
+                // dividend -= current divisor
+                dividendLong -= divisorLong;
+            }
+            divisorLong >>= 1;
+            base--;
+        }
+        return isNeg ? -result : result;
+    }
+}
+
+/***** OLD VERSION *****/
+
 public class Solution {
     public int divide(int dividend, int divisor) {
         // if divisor = 0, return MAX_VALUE
