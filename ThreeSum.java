@@ -12,6 +12,50 @@ The solution set must not contain duplicate triplets.
     (-1, -1, 2)
 */
 
+// two pointers: O(n^2) time cost and O(1) space cost
+
+  public static List<List<Integer>> threeSum(int[] nums) {
+    List<List<Integer>> results = new ArrayList<>();
+    if (nums == null || nums.length < 3) {
+      return results;
+    }
+    Arrays.sort(nums);
+    for (int i = 0; i < nums.length - 2; i++) {
+      if (i > 0 && nums[i] == nums[i - 1]) {
+        continue;
+      }
+      int target = -nums[i];
+      int left = i + 1;
+      int right = nums.length - 1;
+      while (left < right) {
+        int sum = nums[left] + nums[right];
+        if (sum == target) {
+          List<Integer> result = new ArrayList<>();
+          result.add(nums[i]);
+          result.add(nums[left]);
+          result.add(nums[right]);
+          results.add(result);
+          // don't forget to move left & right after finding a match
+          left++;
+          right--;
+          while (left < right && nums[left] == nums[left - 1]) {
+            left++;
+          }
+          while (left < right && nums[right] == nums[right + 1]) {
+            right--;
+          }
+        } else if (sum < target) {
+          left++;
+        } else {
+          right--;
+        }
+      }
+    }
+    return results;
+  }
+
+
+// reuse the twoSum code:
 // O(nlogn + n^2) = O(n^2), space O(n)
 
 public class Solution {
